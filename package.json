@@ -1,0 +1,62 @@
+{
+  "name": "naijafotos",
+  "version": "1.0.0",
+  "description": "something about photos",
+  "main": "index.js",
+  "scripts": {
+    "build": "npm run clean && npm run build-babel",
+    "clean": "rm -rf .nyc_output build coverage && mkdir build",
+    "dev": "cross-env DEBUG=dev nodemon --exec babel-node src/index.js",
+    "docker:build": "docker-compose up -d --build",
+    "lint": "eslint \"**/*.js\" --fix",
+    "start": "node ./build/server.js",
+    "test": "cross-env NODE_ENV=test nyc --clean jest --coverage"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "transform": {
+      "^.+\\.js$": "babel-jest"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/supercede/naija-fotos.git"
+  },
+  "keywords": [
+    "photos"
+  ],
+  "author": "supercede",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/supercede/naija-fotos/issues"
+  },
+  "homepage": "https://github.com/supercede/naija-fotos#readme",
+  "dependencies": {
+    "@babel/register": "^7.9.0",
+    "@babel/runtime": "^7.9.2",
+    "cross-env": "^7.0.2",
+    "debug": "^4.1.1",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.9.9",
+    "nodemon": "^2.0.3",
+    "supertest": "^4.0.2",
+    "swagger-ui-express": "^4.1.4"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.9.0",
+    "@babel/node": "^7.8.7",
+    "@babel/plugin-transform-runtime": "^7.9.0",
+    "@babel/preset-env": "^7.9.5",
+    "babel-eslint": "^10.1.0",
+    "babel-jest": "^25.3.0",
+    "coveralls": "^3.0.11",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb": "^18.1.0",
+    "eslint-plugin-import": "^2.20.2",
+    "jest": "^25.3.0",
+    "morgan": "^1.10.0",
+    "nyc": "^15.0.1"
+  }
+}
