@@ -1,0 +1,21 @@
+{
+  "openapi": "3.0.0",
+  "servers": [
+    {
+      "description": "localhost server",
+      "url": "http:/localhost:5000"
+    }
+  ],
+  "info": {
+    "description": "Something about photos",
+    "version": "1.0.0",
+    "title": "Naijafotos API docs",
+    "contact": {
+      "email": "coderlong.io@gmail.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  }
+}

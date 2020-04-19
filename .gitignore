@@ -1,0 +1,6 @@
+.git
+node_modules
+.env
+.nyc_output
+coverage
+build
