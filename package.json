@@ -5,11 +5,12 @@
   "main": "index.js",
   "scripts": {
     "build": "npm run clean && npm run build-babel",
+    "build-babel": "babel -d ./build ./src -s",
     "clean": "rm -rf .nyc_output build coverage && mkdir build",
     "dev": "cross-env DEBUG=dev nodemon --exec babel-node src/index.js",
     "docker:build": "docker-compose up -d --build",
     "lint": "eslint \"**/*.js\" --fix",
-    "start": "node ./build/server.js",
+    "start": "node ./build/index.js",
     "test": "cross-env NODE_ENV=test nyc --clean jest --coverage"
   },
   "jest": {
