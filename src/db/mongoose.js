@@ -10,20 +10,12 @@ const {
   TEST_DB,
   DEV_DB,
   PROD_DB,
+  MONGO_PW,
 } = process.env;
-let db;
-
-if (NODE_ENV === 'development') {
-  db = DEV_DB;
-} else if (NODE_ENV === 'test') {
-  db = TEST_DB;
-} else {
-  db = PROD_DB;
-}
 
 const options = {
   autoIndex: false, // Don't build indexes
-  reconnectTries: 10, // Retry up to 10 times
+  reconnectTries: 10, // Retry up to 10 times (Docker mongo image takes time to connect)
   reconnectInterval: 500, // Reconnect every 500ms
   poolSize: 10, // Maintain up to 10 socket connections
   // If not connected, return errors immediately rather than waiting for reconnect
@@ -32,6 +24,19 @@ const options = {
   useCreateIndex: true,
   useFindAndModify: false,
 };
+
+let db;
+
+if (NODE_ENV === 'development') {
+  db = DEV_DB;
+} else if (NODE_ENV === 'test') {
+  db = TEST_DB;
+} else {
+  db = PROD_DB.replace('<password>', MONGO_PW);
+  delete options.reconnectTries;
+  delete options.reconnectInterval;
+  options.useUnifiedTopology = true;
+}
 
 const connectWithRetry = () => {
   DEBUG('MongoDB connection with retry');
