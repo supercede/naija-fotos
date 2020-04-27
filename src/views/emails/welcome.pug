@@ -1,0 +1,18 @@
+extends index-email
+
+block content
+    h3 Welcome to Naijafotos 🎉🙏
+    p Hi #{firstName},
+    p You're welcome to the best photo sharing website in Nigeria. We are honoured to have you join us!
+    p You don’t need to be a pro to share your work on Naijafotos. That photo you took on your phone of an event while visiting your hometown for the holidays might just be seen by millions
+    table.btn.btn-primary(role='presentation', border='0', cellpadding='0', cellspacing='0')
+        tbody
+            tr
+                td(align='left')
+                    table(role='presentation', border='0', cellpadding='0', cellspacing='0')
+                        tbody
+                            tr
+                                td
+                                    a(href=`${url}`, target='_blank') Get Started
+    p Send us an email if you need help starting out, but Naijafotos is designed in such a way to  make sure navigating is as easy to use as possible.
+    p - Killua Ade Mustang, CEO

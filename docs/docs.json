@@ -17,5 +17,582 @@
       "name": "Apache 2.0",
       "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
     }
+  },
+  "tags": [
+    {
+      "name": "users",
+      "description": "Operations available to all users (admins and moderators included)"
+    },
+    {
+      "name": "admins",
+      "description": "Operations available to admins"
+    },
+    {
+      "name": "moderators",
+      "description": "Operations available to moderators"
+    }
+  ],
+  "paths": {
+    "/api/v1/auth/signup": {
+      "post": {
+        "tags": [
+          "users"
+        ],
+        "summary": "user signup",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserRegistrationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "signup successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserRegistrationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "validation errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserRegistrationErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "user with email address or username is already registered",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserRegistrationConflictResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/login": {
+      "post": {
+        "tags": [
+          "users"
+        ],
+        "summary": "log in to user account",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserSigninRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "user login successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserRegistrationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserRegistrationErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "email or password is incorrect",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserIncorrectDetailsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/{provider}": {
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "summary": "authenticate a user using 3rd party social accounts",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "provider",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "accepted providers are either facebook or google"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful first time sign in by user (Account created)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserRegistrationResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Successful subsequent sign in by user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserRegistrationResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/auth/forgot-password": {
+      "post": {
+        "tags": [
+          "users"
+        ],
+        "summary": "send password reset to user mail",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EmailSchema"
+              }
+            }
+          },
+          "required": true,
+          "description": "email address of the user"
+        },
+        "responses": {
+          "200": {
+            "description": "success"
+          },
+          "400": {
+            "description": "validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmailValidationErrorResponseSchema"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmailErrorResponseSchema"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/reset-password": {
+      "patch": {
+        "tags": [
+          "users"
+        ],
+        "summary": "reset user password",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "token",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "user token"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResetPasswordSchema"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserRegistrationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PasswordValidationErrorSchema"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid token/token from unauthorized user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvalidTokenErrorSchema"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "EmailSchema": {
+        "required": [
+          "email"
+        ],
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "killua@hunteracademy.com"
+          }
+        }
+      },
+      "ResetPasswordSchema": {
+        "required": [
+          "password",
+          "passwordConfirm"
+        ],
+        "properties": {
+          "password": {
+            "type": "string",
+            "format": "password",
+            "example": "password123"
+          },
+          "passwordConfirm": {
+            "type": "string",
+            "format": "password",
+            "example": "password123"
+          }
+        }
+      },
+      "UserRegistrationRequest": {
+        "required": [
+          "name",
+          "email",
+          "userName",
+          "password",
+          "passwordConfirm"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Killua Mustang"
+          },
+          "userName": {
+            "type": "string",
+            "example": "killi_19"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "killua@hunteracademy.com"
+          },
+          "password": {
+            "type": "string",
+            "format": "password",
+            "example": "password123"
+          },
+          "passwordConfirm": {
+            "type": "string",
+            "format": "password",
+            "example": "password123"
+          }
+        }
+      },
+      "UserSigninRequest": {
+        "required": [
+          "email (value can be email or username of user)",
+          "password"
+        ],
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "killua@hunteracademy.com"
+          },
+          "password": {
+            "type": "string",
+            "format": "password",
+            "example": 123456789
+          }
+        }
+      },
+      "UserRegistrationResponse": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "user": {
+                "type": "object",
+                "properties": {
+                  "_id": {
+                    "type": "string",
+                    "format": "mongoose ObjectID",
+                    "example": "5ea71dbd8121dd1808f6e7fe"
+                  },
+                  "name": {
+                    "type": "string",
+                    "example": "Killua Mustang"
+                  },
+                  "userName": {
+                    "type": "string",
+                    "example": "killi_19"
+                  },
+                  "local": {
+                    "type": "object",
+                    "properties": {
+                      "email": {
+                        "type": "email",
+                        "format": "email",
+                        "example": "killua@hunteracademy.com"
+                      }
+                    }
+                  },
+                  "active": {
+                    "type": "boolean",
+                    "example": true
+                  }
+                }
+              },
+              "token": {
+                "type": "string",
+                "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6Ikp[...]"
+              }
+            }
+          }
+        }
+      },
+      "UserRegistrationErrorResponse": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "error"
+          },
+          "error": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "type": "string",
+                "example": "validation error"
+              },
+              "errors": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "name is required"
+                  },
+                  "userName": {
+                    "type": "string",
+                    "example": "Use only numbers, letters and underscores"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "Password should be between 8 to 20 characters"
+                  },
+                  "passwordConfirm": {
+                    "type": "string",
+                    "example": "Passwords don't match"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "UserRegistrationConflictResponse": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "error"
+          },
+          "error": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "type": "string",
+                "example": "validation error"
+              },
+              "errors": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "Email already registered, log in instead"
+                  },
+                  "userName": {
+                    "type": "string",
+                    "example": "Username exists, please try another"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "UserIncorrectDetailsResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "error"
+          },
+          "error": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "type": "string",
+                "example": "Incorrect email or password."
+              }
+            }
+          }
+        }
+      },
+      "EmailErrorResponseSchema": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "error"
+          },
+          "error": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "type": "string",
+                "example": "Problem sending mail, try again later"
+              }
+            }
+          }
+        }
+      },
+      "EmailValidationErrorResponseSchema": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "error"
+          },
+          "error": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "type": "string",
+                "example": "validation error"
+              },
+              "errors": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "Email address is required"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "PasswordValidationErrorSchema": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "error"
+          },
+          "error": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "type": "string",
+                "example": "validation error"
+              },
+              "errors": {
+                "type": "object",
+                "properties": {
+                  "password": {
+                    "type": "string",
+                    "example": "password is required"
+                  },
+                  "passwordConfirm": {
+                    "type": "string",
+                    "example": "passwords d not required"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "InvalidTokenErrorSchema": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "error"
+          },
+          "error": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "type": "string",
+                "example": "Reset Token is invalid or expired"
+              }
+            }
+          }
+        }
+      }
+    }
   }
 }

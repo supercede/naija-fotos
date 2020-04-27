@@ -7,7 +7,7 @@ import app from './app';
 config();
 
 const DEBUG = debug('dev');
-const PORT = process.env.NODE_ENV === 'test' ? 6378 : process.env.PORT || 5000;
+const PORT = process.env.NODE_ENV === 'test' ? 7647 : process.env.PORT || 5000;
 
 const server = http.createServer(app);
 
@@ -16,8 +16,8 @@ process.on('uncaughtException', error => {
   process.exit(1);
 });
 
-process.on('unhandledRejection', (reason, promise) => {
-  DEBUG(`unhandled rejection at ${promise} reason: ${reason}`);
+process.on('unhandledRejection', err => {
+  DEBUG('Unhandled Rejection:', { name: err.name, message: err.message });
   process.exit(1);
 });
 

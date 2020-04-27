@@ -9,15 +9,19 @@
     "clean": "rm -rf .nyc_output build coverage && mkdir build",
     "dev": "cross-env DEBUG=dev nodemon --exec babel-node src/index.js",
     "docker:build": "docker-compose up -d --build",
-    "lint": "eslint \"**/*.js\" --fix",
+    "lint": "eslint \"**/*.js\"",
+    "lint:fix": "eslint \"**/*.js\" --fix",
     "start": "node ./build/index.js",
-    "test": "cross-env NODE_ENV=test nyc --clean jest --coverage"
+    "test": "cross-env NODE_ENV=test nyc --clean jest --maxWorkers=1 --coverage"
   },
   "jest": {
     "testEnvironment": "node",
     "transform": {
       "^.+\\.js$": "babel-jest"
-    }
+    },
+    "setupFilesAfterEnv": [
+      "./tests/jest/defaultTimeout.js"
+    ]
   },
   "repository": {
     "type": "git",
@@ -35,12 +39,25 @@
   "dependencies": {
     "@babel/register": "^7.9.0",
     "@babel/runtime": "^7.9.2",
+    "bcrypt": "^4.0.1",
+    "core-js": "^3.6.5",
     "cross-env": "^7.0.2",
     "debug": "^4.1.1",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "express-validator": "^6.4.0",
+    "html-to-text": "^5.1.1",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.9",
+    "nodemailer": "^6.4.6",
     "nodemon": "^2.0.3",
+    "passport": "^0.4.1",
+    "passport-facebook": "^3.0.0",
+    "passport-google-oauth20": "^2.0.0",
+    "passport-jwt": "^4.0.0",
+    "passport-local": "^1.0.0",
+    "passport-mocked": "^1.4.0",
+    "pug": "^2.0.4",
     "supertest": "^4.0.2",
     "swagger-ui-express": "^4.1.4"
   },
