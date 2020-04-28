@@ -168,6 +168,7 @@ export default {
         data,
       });
     } catch (err) {
+      console.log(err);
       user.passwordResetToken = undefined;
       user.passwordResetTokenExpires = undefined;
       await user.save({ validateBeforeSave: false });
