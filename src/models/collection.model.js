@@ -16,10 +16,10 @@ const collectionSchema = new mongoose.Schema(
       ref: 'User',
       required: true,
     },
-    category: [
+    tag: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Category',
+        ref: 'Tag',
       },
     ],
     upvotes: [

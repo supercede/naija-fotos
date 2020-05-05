@@ -6,3 +6,5 @@ node_modules
 .env
 .prettierrc
 todo.md
+ztemp
+.idea

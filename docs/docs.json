@@ -280,6 +280,611 @@
           }
         }
       }
+    },
+    "/api/v1/users": {
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/filterParam"
+          },
+          {
+            "$ref": "#/components/parameters/sortParam"
+          },
+          {
+            "$ref": "#/components/parameters/fieldsParam"
+          },
+          {
+            "$ref": "#/components/parameters/pageParam"
+          },
+          {
+            "$ref": "#/components/parameters/limitParam"
+          }
+        ],
+        "summary": "Get all users",
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/validListOfUserSchema"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "api/v1/users/avatar": {
+      "patch": {
+        "tags": [
+          "users"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Bearer token"
+          },
+          {
+            "in": "cookie",
+            "name": "jwt",
+            "schema": {
+              "type": "apiKey"
+            },
+            "required": true,
+            "description": "Cookie can be used in place of Bearer Token"
+          }
+        ],
+        "summary": "Upload user profile Image",
+        "requestBody": {
+          "required": true,
+          "description": "image file in the 'avatar' field",
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "avatar": {
+                    "type": "image",
+                    "format": "png, jpg, jpeg"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/validUserResponseSchema"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "api/v1/users/{userid}": {
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Get a user details",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "id for user"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/validUserResponseSchema"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      }
+    },
+    "api/v1/users/me": {
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Bearer token"
+          },
+          {
+            "in": "cookie",
+            "name": "jwt",
+            "schema": {
+              "type": "apiKey"
+            },
+            "required": true,
+            "description": "Cookie can be used in place of Bearer Token"
+          }
+        ],
+        "summary": "Get details for current logged in user (in cookie or token)",
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/validUserSchema"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      }
+    },
+    "api/v1/users/{:userId}/photos": {
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Get a user's photos",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "id for user"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/validListOfPhotoSchema"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      }
+    },
+    "api/v1/users/myPhotos": {
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "apiKey"
+            },
+            "required": true,
+            "description": "Bearer token"
+          },
+          {
+            "in": "cookie",
+            "name": "jwt",
+            "schema": {
+              "type": "apiKey"
+            },
+            "required": true,
+            "description": "Cookie can be used in place of Bearer Token"
+          }
+        ],
+        "summary": "Get a user's photos",
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/validListOfPhotoSchema"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      }
+    },
+    "api/v1/users/updateMe": {
+      "patch": {
+        "tags": [
+          "users"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "apiKey"
+            },
+            "required": true,
+            "description": "Bearer token"
+          },
+          {
+            "in": "cookie",
+            "name": "jwt",
+            "schema": {
+              "type": "apiKey"
+            },
+            "required": true,
+            "description": "Cookie can be used in place of Bearer Token"
+          }
+        ],
+        "summary": "update a logged in user profile",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserUpdateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/validUserResponseSchema"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad/malformed request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "api/v1/users/deleteMe": {
+      "delete": {
+        "tags": [
+          "users"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "apiKey"
+            },
+            "required": true,
+            "description": "Bearer token"
+          },
+          {
+            "in": "cookie",
+            "name": "jwt",
+            "schema": {
+              "type": "apiKey"
+            },
+            "required": true,
+            "description": "Cookie can be used in place of Bearer Token"
+          }
+        ],
+        "summary": "delete a logged in user account",
+        "responses": {
+          "204": {
+            "description": "success (No content)"
+          },
+          "400": {
+            "description": "Bad/malformed request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "api/v1/photos": {
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/tagParam"
+          },
+          {
+            "$ref": "#/components/parameters/filterParam"
+          },
+          {
+            "$ref": "#/components/parameters/sortParam"
+          },
+          {
+            "$ref": "#/components/parameters/fieldsParam"
+          },
+          {
+            "$ref": "#/components/parameters/pageParam"
+          },
+          {
+            "$ref": "#/components/parameters/limitParam"
+          }
+        ],
+        "summary": "Get all photos",
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/validListOfPhotoSchema"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Post a photo",
+        "requestBody": {
+          "required": true,
+          "description": "image file in the 'photo' field",
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "photo": {
+                    "type": "image",
+                    "format": "png, jpg, jpeg"
+                  },
+                  "tags": {
+                    "type": "array",
+                    "example": [
+                      "person",
+                      "outside"
+                    ]
+                  },
+                  "description": {
+                    "type": "string",
+                    "example": "An awesome picture"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/validPhotoResponseSchema"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad/malformed request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "api/v1/{:photoId}": {
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Get a particular photo",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "photoId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "id for photo"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/validPhotoResponseSchema"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "users"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "apiKey"
+            },
+            "required": true,
+            "description": "Bearer token"
+          },
+          {
+            "in": "cookie",
+            "name": "jwt",
+            "schema": {
+              "type": "apiKey"
+            },
+            "required": true,
+            "description": "Cookie can be used in place of Bearer Token"
+          },
+          {
+            "in": "path",
+            "name": "photoId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "id for photo"
+          }
+        ],
+        "summary": "Update photo",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "$ref": "#/components/schemas/validPhotoUpdateSchema"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/validPhotoResponseSchema"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad/malformed request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "users"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "apiKey"
+            },
+            "required": true,
+            "description": "Bearer token"
+          },
+          {
+            "in": "cookie",
+            "name": "jwt",
+            "schema": {
+              "type": "apiKey"
+            },
+            "required": true,
+            "description": "Cookie can be used in place of Bearer Token"
+          },
+          {
+            "in": "path",
+            "name": "photoId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "id for photo"
+          }
+        ],
+        "summary": "delete a photo",
+        "responses": {
+          "204": {
+            "description": "success (No content)"
+          },
+          "400": {
+            "description": "Bad/malformed request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -345,6 +950,33 @@
             "type": "string",
             "format": "password",
             "example": "password123"
+          },
+          "portfolio": {
+            "type": "string",
+            "format": "url",
+            "example": "www.mysite.com"
+          }
+        }
+      },
+      "UserUpdateRequest": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Killua Mustang"
+          },
+          "userName": {
+            "type": "string",
+            "example": "killi_19"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "killua@hunteracademy.com"
+          },
+          "portfolio": {
+            "type": "string",
+            "format": "url",
+            "example": "www.mysite.com"
           }
         }
       },
@@ -390,6 +1022,10 @@
                   "userName": {
                     "type": "string",
                     "example": "killi_19"
+                  },
+                  "portfolio": {
+                    "type": "string",
+                    "example": "www.mysite.com"
                   },
                   "local": {
                     "type": "object",
@@ -568,7 +1204,7 @@
                   },
                   "passwordConfirm": {
                     "type": "string",
-                    "example": "passwords d not required"
+                    "example": "passwords do not match"
                   }
                 }
               }
@@ -592,6 +1228,270 @@
             }
           }
         }
+      },
+      "validListOfUserSchema": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "users": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/validUserSchema"
+                }
+              }
+            }
+          }
+        }
+      },
+      "validUserResponseSchema": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "user": {
+                "type": "object",
+                "properties": {
+                  "_id": {
+                    "type": "string",
+                    "format": "mongoose ObjectID",
+                    "example": "5ea71dbd8121dd1808f6e7fe"
+                  },
+                  "name": {
+                    "type": "string",
+                    "example": "Killua Mustang"
+                  },
+                  "userName": {
+                    "type": "string",
+                    "example": "killi_19"
+                  },
+                  "local": {
+                    "type": "object",
+                    "properties": {
+                      "email": {
+                        "type": "email",
+                        "format": "email",
+                        "example": "killua@hunteracademy.com"
+                      }
+                    }
+                  },
+                  "avatar": {
+                    "type": "string",
+                    "example": "https://res.cloudinary.com/mycloud/image/upload/v1588371243/my-folder/ctdoiku4lurn1a0hwt0t.jpg"
+                  },
+                  "portfolio": {
+                    "type": "string",
+                    "example": "www.mysite.com"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "validListOfPhotoSchema": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "success"
+          },
+          "photos": {
+            "type": "object",
+            "properties": {
+              "photos": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/validPhotoSchema"
+                }
+              }
+            }
+          }
+        }
+      },
+      "validPhotoResponseSchema": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "success"
+          },
+          "photo": {
+            "$ref": "#/components/schemas/validPhotoSchema"
+          }
+        }
+      },
+      "validUserSchema": {
+        "properties": {
+          "_id": {
+            "type": "string",
+            "format": "mongoose ObjectID",
+            "example": "5ea71dbd8121dd1808f6e7fe"
+          },
+          "name": {
+            "type": "string",
+            "example": "Killua Mustang"
+          },
+          "userName": {
+            "type": "string",
+            "example": "killi_19"
+          },
+          "local": {
+            "type": "object",
+            "properties": {
+              "email": {
+                "type": "email",
+                "format": "email",
+                "example": "killua@hunteracademy.com"
+              }
+            }
+          },
+          "portfolio": {
+            "type": "string",
+            "format": "url",
+            "example": "www.mysite.com"
+          },
+          "avatar": {
+            "type": "string",
+            "example": "https://res.cloudinary.com/mycloud/image/upload/v1588371243/my-folder/ctdoiku4lurn1a0hwt0t.jpg"
+          },
+          "active": {
+            "type": "boolean",
+            "example": true
+          }
+        }
+      },
+      "validPhotoUpdateSchema": {
+        "properties": {
+          "tags": {
+            "type": "array",
+            "example": [
+              "person",
+              "outside"
+            ]
+          },
+          "description": {
+            "type": "string",
+            "example": "An awesome picture"
+          }
+        }
+      },
+      "validPhotoSchema": {
+        "properties": {
+          "_id": {
+            "type": "string",
+            "format": "mongoose ObjectID",
+            "example": "5ea71dbd8121dd1808f6e7fe"
+          },
+          "upvoteCount": {
+            "type": "number",
+            "example": 0
+          },
+          "commentCount": {
+            "type": "number",
+            "example": 0
+          },
+          "tags": {
+            "type": "array",
+            "example": [
+              "person",
+              "outside"
+            ]
+          },
+          "imageURL": {
+            "type": "string",
+            "example": "https://res.cloudinary.com/mycloud/image/upload/v1588371243/my-folder/ctdoiku4lurn1a0hwt0t.jpg"
+          },
+          "description": {
+            "type": "string",
+            "example": "An awesome picture"
+          },
+          "user": {
+            "properties": {
+              "_id": {
+                "type": "string",
+                "format": "mongoose ObjectID",
+                "example": "5ea71dbd8121dd1808f6e7fe"
+              },
+              "name": {
+                "type": "string",
+                "example": "Killua Mustang"
+              },
+              "userName": {
+                "type": "string",
+                "example": "killi_19"
+              }
+            }
+          }
+        }
+      }
+    },
+    "parameters": {
+      "tagParam": {
+        "in": "query",
+        "name": "tag",
+        "schema": {
+          "type": "string",
+          "example": "url?tag=football"
+        },
+        "required": false,
+        "description": "filter results by tags (Works for photos route)."
+      },
+      "filterParam": {
+        "in": "query",
+        "name": "filter",
+        "schema": {
+          "type": "string",
+          "example": "url?commentCount[gt]=5"
+        },
+        "required": false,
+        "description": "filter results based on field values. You can get use greater than(gt), less than (lt), Greater Than/Equal To (gte) or Less Than/Equal To (lte) to filter results."
+      },
+      "sortParam": {
+        "in": "query",
+        "name": "sort",
+        "schema": {
+          "type": "string",
+          "example": "url?sort=userName"
+        },
+        "required": false,
+        "description": "sort results by various fields (upvotes, comments count etc)"
+      },
+      "fieldsParam": {
+        "in": "query",
+        "name": "fields",
+        "schema": {
+          "type": "string",
+          "example": "url?fields=userName,imageURL"
+        },
+        "required": false,
+        "description": "return only selected fields in results. Multiple fields can be separated with commas. Adding a negative value to a parameter will return everything BUT that parameter."
+      },
+      "limitParam": {
+        "in": "query",
+        "name": "limit",
+        "schema": {
+          "type": "string",
+          "example": "url?limit=10"
+        },
+        "required": false,
+        "description": "To limit amount of results released per 'page'"
+      },
+      "pageParam": {
+        "in": "query",
+        "name": "page",
+        "schema": {
+          "type": "string",
+          "example": "url?page=2"
+        },
+        "required": false,
+        "description": "To return a particular page of results (after pagination). For example, to get the second page of a response limited to 3 per request: url?page=2&limit=3"
       }
     }
   }

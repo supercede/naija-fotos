@@ -4,7 +4,6 @@ import { config } from 'dotenv';
 import passport from 'passport';
 import GoogleStrategy from 'passport-google-oauth20';
 import MockStrategy from 'passport-mocked';
-import { Types } from 'mongoose';
 
 import User from '../../models/user.model';
 

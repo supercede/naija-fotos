@@ -1,17 +1,19 @@
+/* eslint-disable func-names, no-use-before-define, no-undef, no-underscore-dangle */
+
 import mongoose from 'mongoose';
 
 const photoSchema = new mongoose.Schema(
   {
-    name: {
-      type: String,
-      required: 'true',
-    },
     imageURL: {
       type: String,
       required: true,
     },
-    caption: String,
+    description: String,
     upvoteCount: {
+      type: Number,
+      default: 0,
+    },
+    commentCount: {
       type: Number,
       default: 0,
     },
@@ -20,10 +22,9 @@ const photoSchema = new mongoose.Schema(
       ref: 'User',
       required: true,
     },
-    category: [
+    tags: [
       {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Category',
+        type: String,
       },
     ],
     upvotes: [
@@ -43,6 +44,22 @@ const photoSchema = new mongoose.Schema(
     timestamps: true,
   },
 );
+
+photoSchema.pre(/^find$/, async function(next) {
+  this.populate({
+    path: 'user',
+    select: 'name userName',
+  });
+  next();
+});
+
+photoSchema.pre(/^findOne/, async function(next) {
+  this.populate({
+    path: 'user',
+    select: 'name userName local avatar',
+  });
+  next();
+});
 
 const Photo = mongoose.model('Photo', photoSchema);
 

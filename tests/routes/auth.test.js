@@ -1,8 +1,8 @@
 /* eslint-disable no-undef, no-underscore-dangle */
-import crypto from 'crypto';
 import request from 'supertest';
 import { config } from 'dotenv';
 import mongoose from 'mongoose';
+import nodemailer from 'nodemailer';
 import app from '../../src/app';
 import User from '../../src/models/user.model';
 import {
@@ -21,7 +21,7 @@ const sendMailMock = jest.fn();
 
 jest.mock('nodemailer');
 
-const nodemailer = require('nodemailer');
+// const nodemailer = require('nodemailer');
 
 nodemailer.createTransport.mockReturnValue({ sendMail: sendMailMock });
 
