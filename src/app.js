@@ -2,6 +2,7 @@ import express from 'express';
 import { config } from 'dotenv';
 import logger from 'morgan';
 import passport from 'passport';
+import cookieParser from 'cookie-parser';
 import swaggerUI from 'swagger-ui-express';
 
 import docs from '../docs/docs.json';
@@ -15,6 +16,8 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+app.use(cookieParser());
+
 if (['development', 'production'].includes(process.env.NODE_ENV)) {
   app.use(logger('dev'));
 }
@@ -26,7 +29,7 @@ app.use('/docs', swaggerUI.serve, swaggerUI.setup(docs));
 app.get('/', (_, res) => {
   res.status(200).json({
     status: 'success',
-    message: 'Welcome to the Naijaphotos API',
+    message: 'Welcome to the Naijafotos API',
   });
 });
 

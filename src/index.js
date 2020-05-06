@@ -1,6 +1,7 @@
 import http from 'http';
 import debug from 'debug';
 import { config } from 'dotenv';
+import Q from 'q';
 import './db/mongoose';
 import app from './app';
 
@@ -11,13 +12,20 @@ const PORT = process.env.NODE_ENV === 'test' ? 7647 : process.env.PORT || 5000;
 
 const server = http.createServer(app);
 
+// To throw handle cloudinary rejections as error messages
+Q.stopUnhandledRejectionTracking();
+
 process.on('uncaughtException', error => {
   DEBUG(`uncaught exception: ${error.message}`);
   process.exit(1);
 });
 
 process.on('unhandledRejection', err => {
-  DEBUG('Unhandled Rejection:', { name: err.name, message: err.message });
+  DEBUG(err);
+  DEBUG('Unhandled Rejection:', {
+    name: err.name,
+    message: err.message || err,
+  });
   process.exit(1);
 });
 

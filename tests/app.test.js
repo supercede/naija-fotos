@@ -12,7 +12,7 @@ describe('App Setup', () => {
 
     expect(response.status).toBe(200);
     expect(response.body.status).toBe('success');
-    expect(response.body.message).toBe('Welcome to the Naijaphotos API');
+    expect(response.body.message).toBe('Welcome to the Naijafotos API');
   });
 
   test('error if an invalid route is requested', async () => {

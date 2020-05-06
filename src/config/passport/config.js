@@ -7,19 +7,28 @@ config();
 
 const jwtPublicSecret = process.env.JWT_PUBLIC_SECRET.replace(/\\n/g, '\n');
 
-// export const findBySocialID = async (socialID, provider) =>
-//   User.findOne({
-//     where: { socialID, provider },
-//   });
-
 const options = {
-  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
   secretOrKey: jwtPublicSecret,
   algorithms: ['RS256'],
+  passReqToCallback: true,
 };
 
+const cookieExtractor = req => {
+  let token = null;
+  if (req && req.cookies.jwt) {
+    token = req.cookies.jwt;
+  }
+
+  return token;
+};
+
+options.jwtFromRequest = ExtractJwt.fromExtractors([
+  ExtractJwt.fromAuthHeaderAsBearerToken(),
+  req => cookieExtractor(req),
+]);
+
 passport.use(
-  new Strategy(options, (jwtPayload, done) => {
+  new Strategy(options, (req, jwtPayload, done) => {
     User.findOne({ _id: jwtPayload.id })
       .then(user => {
         if (user) {

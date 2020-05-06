@@ -52,6 +52,12 @@ export default {
       })
       .isLength({ min: 8, max: 18 })
       .withMessage('Password should be between 8 to 20 characters'),
+
+    check('portfolio')
+      .trim()
+      .optional()
+      .isURL()
+      .withMessage('Personal website must be a URL'),
   ],
 
   userLogInSchema: [

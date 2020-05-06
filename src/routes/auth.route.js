@@ -11,7 +11,6 @@ import passportFacebook from '../config/passport/passport-facebook';
 const {
   signup,
   login,
-  profile,
   resetPassword,
   forgotPassword,
   socialAuth,

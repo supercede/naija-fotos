@@ -1,8 +1,6 @@
 import crypto from 'crypto';
-import jwt from 'jsonwebtoken';
 import passport from 'passport';
 import debug from 'debug';
-import dotenv from 'dotenv';
 
 import passportLocal from '../config/passport/passport-local';
 import { ApplicationError, NotFoundError } from '../helpers/errors';

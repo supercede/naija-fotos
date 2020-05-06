@@ -63,6 +63,7 @@ passport.use(
       newUser.local.password = req.body.password;
       newUser.name = req.body.name;
       newUser.userName = req.body.userName;
+      if (req.body.portfolio) newUser.portfolio = req.body.portfolio;
 
       await newUser.save();
       return cb(null, newUser);

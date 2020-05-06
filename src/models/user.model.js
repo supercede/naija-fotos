@@ -1,4 +1,4 @@
-/* eslint-disable func-names, no-use-before-define, no-undef */
+/* eslint-disable func-names, no-use-before-define, no-undef, no-underscore-dangle */
 import crypto from 'crypto';
 import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
@@ -15,6 +15,10 @@ const userSchema = new mongoose.Schema(
     name: {
       type: String,
     },
+    avatar: {
+      type: String,
+    },
+    portfolio: String,
     userName: {
       type: String,
       unique: true,
@@ -52,14 +56,7 @@ const userSchema = new mongoose.Schema(
       enum: {
         values: ['user', 'moderator', 'admin'],
       },
-      select: false,
     },
-    photos: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Photo',
-      },
-    ],
     collections: [
       {
         type: mongoose.Schema.Types.ObjectId,
@@ -80,16 +77,24 @@ const userSchema = new mongoose.Schema(
     ],
   },
   {
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
     timestamps: true,
   },
 );
 
-userSchema.pre(/^find/, function (next) {
+userSchema.virtual('photos', {
+  ref: 'Photo',
+  localField: '_id',
+  foreignField: 'user',
+});
+
+userSchema.pre(/^find/, function(next) {
   this.find({ active: { $ne: false } });
   next();
 });
 
-userSchema.pre('save', async function (next) {
+userSchema.pre('save', async function(next) {
   if (!this.local.password || !this.isModified('local.password')) return next;
 
   this.local.password = await bcrypt.hash(
@@ -99,7 +104,7 @@ userSchema.pre('save', async function (next) {
   next();
 });
 
-userSchema.methods.toJSON = function () {
+userSchema.methods.toJSON = function() {
   const user = this;
 
   const userObj = this.toObject();
@@ -107,18 +112,18 @@ userSchema.methods.toJSON = function () {
   return userObj;
 };
 
-userSchema.methods.comparePassword = async function (password) {
+userSchema.methods.comparePassword = async function(password) {
   return bcrypt.compare(password, this.local.password);
 };
 
-userSchema.methods.generateVerificationToken = function () {
+userSchema.methods.generateVerificationToken = function() {
   return jwt.sign({ id: this._id }, jwtPrivateSecret, {
     expiresIn: '10d',
     algorithm: 'RS256',
   });
 };
 
-userSchema.methods.resetPasswordToken = function () {
+userSchema.methods.resetPasswordToken = function() {
   const resetToken = crypto.randomBytes(32).toString('hex');
 
   this.passwordResetToken = crypto
@@ -132,7 +137,7 @@ userSchema.methods.resetPasswordToken = function () {
   return resetToken;
 };
 
-userSchema.statics.findBySocialID = async function (id, field) {
+userSchema.statics.findBySocialID = async function(id, field) {
   const user = await User.findOne({ [`${field}`]: id });
 
   return user;
