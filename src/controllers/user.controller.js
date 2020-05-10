@@ -93,6 +93,7 @@ export default {
     const { _id } = req.user;
     if (req.body.password) {
       throw new ApplicationError(
+        400,
         'You cannot update your password through this route',
       );
     }

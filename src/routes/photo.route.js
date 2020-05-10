@@ -28,8 +28,8 @@ photoRouter
   .get(getAllPhotos);
 
 photoRouter
-  .route('/:photoId')
-  .get(catchAsync(getOnePhoto))
+  .route('/:itemId')
+  .get(getOnePhoto)
   .patch(authenticate, validator(photoUpdateSchema), catchAsync(updatePhoto))
   .delete(authenticate, catchAsync(deletePhoto));
 

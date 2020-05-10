@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 import mongoose from 'mongoose';
 import User from '../../src/models/user.model';
 import Photo from '../../src/models/photo.model';
+import Collection from '../../src/models/collection.model';
 
 const idOne = mongoose.Types.ObjectId();
 const idTwo = mongoose.Types.ObjectId();
@@ -28,7 +29,7 @@ const userTwoSchema = {
   },
 };
 
-const userThreeSchema = {
+export const userThreeSchema = {
   _id: idThree,
   name: 'Diana Yobe',
   userName: 'clark11',
@@ -113,15 +114,78 @@ const photoFour = {
   user: userOneSchema._id,
 };
 
+const publicCollectionOne = {
+  upvoteCount: 0,
+  tags: [],
+  private: false,
+  photos: [photoOne._id, photoTwo._id],
+  upvotes: [],
+  comments: [],
+  _id: '5eb356ae240da53ff8dcfcbc',
+  name: 'public collection',
+  description:
+    'Eat, Drink, and be Merry! Winter is all about staying indoors and getting cosy. Filled with photos of friends gathered by the fire and families sharing festive treats spent together',
+  user: userThreeSchema._id,
+};
+
+const publicCollectionTwo = {
+  upvoteCount: 0,
+  tags: [],
+  private: false,
+  photos: [photoTwo._id, photoFour._id],
+  upvotes: [],
+  comments: [],
+  _id: '5ead797a6466441ab099bcc6',
+  name: 'public collection one',
+  description:
+    'Eat, Drink, and be Merry! Winter is all about staying indoors and getting cosy. Filled with photos of friends gathered by the fire and families sharing festive treats spent together',
+  user: userOneSchema._id,
+};
+
+const publicCollectionThree = {
+  upvoteCount: 0,
+  tags: [],
+  private: false,
+  photos: [photoTwo._id, photoFour._id],
+  upvotes: [],
+  comments: [],
+  _id: mongoose.Types.ObjectId(),
+  name: 'public collection two',
+  description:
+    'Eat, Drink, and be Merry! Winter is all about staying indoors and getting cosy. Filled with photos of friends gathered by the fire and families sharing festive treats spent together',
+  user: userThreeSchema._id,
+};
+
+export const privateCollectionOne = {
+  upvoteCount: 0,
+  tags: [],
+  private: true,
+  photos: [photoOne._id, photoThree._id],
+  upvotes: [],
+  comments: [],
+  _id: mongoose.Types.ObjectId(),
+  name: 'public collection three',
+  description:
+    'Eat, Drink, and be Merry! Winter is all about staying indoors and getting cosy. Filled with photos of friends gathered by the fire and families sharing festive treats spent together',
+  user: userThreeSchema._id,
+};
+
 export const setupDB = async () => {
   await User.deleteMany();
   await new User(userOne).save();
   await new User(userTwo).save();
   await new User(userThree).save();
   await Photo.insertMany([photoOne, photoTwo, photoThree, photoFour]);
+  await Collection.insertMany([
+    publicCollectionOne,
+    publicCollectionTwo,
+    publicCollectionThree,
+    privateCollectionOne,
+  ]);
 };
 
 export const tearDownDB = async () => {
   await User.deleteMany();
   await Photo.deleteMany();
+  await Collection.deleteMany();
 };

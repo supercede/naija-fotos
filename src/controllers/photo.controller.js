@@ -1,24 +1,15 @@
-import { ApplicationError, NotFoundError } from '../helpers/errors';
+import { ApplicationError } from '../helpers/errors';
 import deleteImage from '../helpers/deleteImage';
 import Photo from '../models/photo.model';
 import filterObj from '../helpers/filterObject';
-import SearchFeatures from '../utils/searchFeatures';
+import dbqueries from '../utils/dbqueries';
 
-const authorize = async (photoId, id, role) => {
-  const photo = await Photo.findOne({ _id: photoId });
-  if (!photo) {
-    throw new NotFoundError('Picture not found');
-  }
-
-  if (photo.user.id !== id && role === 'user') {
-    throw new ApplicationError(
-      403,
-      'You are not permitted to perform this operation',
-    );
-  }
-
-  return photo;
-};
+const {
+  getAll,
+  updateOne,
+  deleteOne,
+  getOne,
+} = dbqueries;
 
 export default {
   uploadImage: async (req, res) => {
@@ -58,88 +49,11 @@ export default {
     }
   },
 
-  getAllPhotos: async (req, res) => {
-    const filter = {};
-    if (req.query.tag) {
-      filter.tags = req.query.tag;
-    }
+  getAllPhotos: getAll(Photo),
 
-    if (req.params.userId) {
-      filter.user = req.params.userId;
-    }
+  getOnePhoto: getOne(Photo),
 
-    const photosQuery = new SearchFeatures(Photo.find(filter), req.query)
-      .filter()
-      .sort()
-      .fieldLimit()
-      .pagination();
+  updatePhoto: updateOne(Photo, 'description', 'tags'),
 
-    const photos = await photosQuery.query;
-
-    res.status(200).json({
-      status: 'success',
-      data: {
-        photos,
-      },
-    });
-  },
-
-  getOnePhoto: async (req, res) => {
-    const { photoId } = req.params;
-
-    const photo = await Photo.findById({ _id: photoId }).populate('user', {
-      userName: 1,
-      name: 1,
-      avatar: 1,
-      local: 1,
-    });
-
-    if (!photo) {
-      throw new NotFoundError('Photo not found');
-    }
-
-    res.status(200).json({
-      status: 'success',
-      data: {
-        photo,
-      },
-    });
-  },
-
-  updatePhoto: async (req, res) => {
-    const { id, role } = req.user;
-
-    const { photoId } = req.params;
-
-    await authorize(photoId, id, role);
-
-    const updates = filterObj(req.body, 'description', 'tags');
-    const updatedPhoto = await Photo.findByIdAndUpdate(photoId, updates, {
-      new: true,
-      runValidators: true,
-    });
-
-    res.status(200).json({
-      status: 'success',
-      data: {
-        photo: updatedPhoto,
-      },
-    });
-  },
-
-  deletePhoto: async (req, res) => {
-    const { id, role } = req.user;
-
-    const { photoId } = req.params;
-
-    await authorize(photoId, id, role);
-
-    const deletedPhoto = await Photo.findByIdAndRemove(photoId);
-
-    deleteImage(deletedPhoto.imageURL);
-
-    res.status(204).json({
-      status: 'success',
-    });
-  },
+  deletePhoto: deleteOne(Photo),
 };

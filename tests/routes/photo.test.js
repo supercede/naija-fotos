@@ -136,7 +136,7 @@ describe('photos tests', () => {
     expect(response.body).toHaveProperty('error');
   });
 
-  test('should not update picture not owned by logged in user', async () => {
+  test('should not delete picture not owned by logged in user', async () => {
     const response = await request(app)
       .delete('/api/v1/photos/5ead787600c8513f3cc1ccb6')
       .set('Authorization', 'Bearer ' + userOneToken);
