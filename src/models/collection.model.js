@@ -1,3 +1,4 @@
+/* eslint-disable func-names */
 import mongoose from 'mongoose';
 
 const collectionSchema = new mongoose.Schema(
@@ -6,7 +7,7 @@ const collectionSchema = new mongoose.Schema(
       type: String,
       required: 'true',
     },
-    caption: String,
+    description: String,
     upvoteCount: {
       type: Number,
       default: 0,
@@ -16,10 +17,19 @@ const collectionSchema = new mongoose.Schema(
       ref: 'User',
       required: true,
     },
-    tag: [
+    tags: [
       {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Tag',
+        type: String,
+      },
+    ],
+    private: {
+      type: Boolean,
+      default: false,
+    },
+    photos: [
+      {
+        type: mongoose.Schema.ObjectId,
+        ref: 'Photo',
       },
     ],
     upvotes: [
@@ -39,6 +49,24 @@ const collectionSchema = new mongoose.Schema(
     timestamps: true,
   },
 );
+
+collectionSchema.pre(/^find/, async function(next) {
+  this.populate({
+    path: 'user',
+    select: 'name userName',
+  }).populate({ path: 'photos', select: 'imageURL user tags' });
+  next();
+});
+
+collectionSchema.pre('save', async function(next) {
+  if (!this.isModified('photos')) return next;
+
+  let tags = this.photos.map(photo => photo.tags);
+  tags = tags.flat();
+
+  const setTags = new Set(tags);
+  this.tags = [...setTags];
+});
 
 const Collection = mongoose.model('Collection', collectionSchema);
 

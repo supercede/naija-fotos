@@ -6,6 +6,7 @@ import userSchema from '../validations/user.validation';
 import { AvatarUploads } from '../services/imageUpload';
 import authentication from '../middleware/authenticate';
 import photoController from '../controllers/photo.controller';
+import collectionController from '../controllers/collection.controller';
 
 const { userUpdateSchema } = userSchema;
 
@@ -21,6 +22,8 @@ const {
 
 const { getAllPhotos } = photoController;
 
+const { getAllCollections } = collectionController;
+
 const userRouter = Router();
 
 userRouter.get('/', getAllUsers);
@@ -29,10 +32,16 @@ userRouter.get('/', getAllUsers);
 
 userRouter.get('/me', authenticate, getMe, catchAsync(getUser));
 userRouter.get('/myPhotos', authenticate, getMe, catchAsync(getAllPhotos));
+userRouter.get(
+  '/myCollections',
+  authenticate,
+  getMe,
+  catchAsync(getAllCollections),
+);
 
 userRouter.get('/:userId', catchAsync(getUser));
-
 userRouter.get('/:userId/photos', catchAsync(getAllPhotos));
+userRouter.get('/:userId/collections', catchAsync(getAllCollections));
 
 userRouter.patch(
   '/avatar',
@@ -51,3 +60,7 @@ userRouter.patch(
 userRouter.delete('/deleteMe', authenticate, catchAsync(deleteMe));
 
 export default userRouter;
+
+// To Do
+// Get user collections
+// Get my collections

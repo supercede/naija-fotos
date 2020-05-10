@@ -89,7 +89,10 @@ export default {
   login: (req, res, next) => {
     passport.authenticate('login', { session: false }, (err, user, info) => {
       if (err || !user) {
-        const { message } = info;
+        let message = err;
+        if (info) {
+          message = info.message;
+        }
         return res.status(401).json({
           status: 'error',
           error: {

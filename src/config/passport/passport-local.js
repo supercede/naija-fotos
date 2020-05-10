@@ -20,7 +20,7 @@ passport.use(
         $or: [{ 'local.email': email }, { userName: email }],
       });
 
-      if (!user) {
+      if (!user || !user.local.password) {
         return cb(null, false, { message: 'Incorrect email or password.' });
       }
 

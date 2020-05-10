@@ -143,7 +143,8 @@ userSchema.statics.findBySocialID = async function(id, field) {
   return user;
 };
 
-userSchema.statics.decodeVerificationToken = async token => jwt.verify(token, jwtPublicSecret);
+userSchema.statics.decodeVerificationToken = async token =>
+  jwt.verify(token, jwtPublicSecret);
 
 userSchema.statics.checkExistingEmail = async email => {
   const checkEmail = await User.findOne({
