@@ -19,7 +19,7 @@ export const userOneSchema = {
   },
 };
 
-const userTwoSchema = {
+export const userTwoSchema = {
   _id: idTwo,
   name: 'Barry Adewande',
   userName: 'clark11',
@@ -49,6 +49,14 @@ export const userThreeToken = userThree.generateVerificationToken();
 
 export const userSchema = {
   email: 'kolawole1@admin.com',
+  userName: 'koleade2',
+  password: 'emiololawaloda',
+  passwordConfirm: 'emiololawaloda',
+  name: 'Kola Wole',
+};
+
+export const conflictUsername = {
+  email: 'somemail1@admin.com',
   userName: 'koleade2',
   password: 'emiololawaloda',
   passwordConfirm: 'emiololawaloda',

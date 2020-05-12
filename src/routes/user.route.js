@@ -18,6 +18,9 @@ const {
   getMe,
   getUser,
   deleteMe,
+  followOrUnfollow,
+  getUserFollowers,
+  getUserFollowing,
 } = userController;
 
 const { getAllPhotos } = photoController;
@@ -38,6 +41,18 @@ userRouter.get(
   getMe,
   catchAsync(getAllCollections),
 );
+userRouter.get(
+  '/myFollowers',
+  authenticate,
+  getMe,
+  catchAsync(getUserFollowers),
+);
+userRouter.get(
+  '/myFollowing',
+  authenticate,
+  getMe,
+  catchAsync(getUserFollowing),
+);
 
 userRouter.get('/:userId', catchAsync(getUser));
 userRouter.get('/:userId/photos', catchAsync(getAllPhotos));
@@ -57,10 +72,24 @@ userRouter.patch(
   catchAsync(updateMe),
 );
 
+userRouter.patch(
+  '/profile/:userId/following',
+  authenticate,
+  catchAsync(followOrUnfollow),
+);
+
+userRouter.get(
+  '/:userId/followers',
+  authenticate,
+  catchAsync(getUserFollowers),
+);
+
+userRouter.get(
+  '/:userId/following',
+  authenticate,
+  catchAsync(getUserFollowing),
+);
+
 userRouter.delete('/deleteMe', authenticate, catchAsync(deleteMe));
 
 export default userRouter;
-
-// To Do
-// Get user collections
-// Get my collections
