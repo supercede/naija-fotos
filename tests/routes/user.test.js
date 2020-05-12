@@ -147,7 +147,7 @@ describe('users tests', () => {
       expect(response.status).toBe(401);
     });
 
-    test('should update user if request body is eempty', async () => {
+    test('should not update user if request body is empty', async () => {
       const response = await request(app)
         .patch('/api/v1/users/updateMe')
         .send({})
@@ -156,6 +156,17 @@ describe('users tests', () => {
       expect(response.status).toBe(400);
       expect(response.body).toHaveProperty('error');
       expect(response.body.error.message).toBe('Empty Request Object');
+    });
+
+    test('should not update user if new userName already exists', async () => {
+      const response = await request(app)
+        .patch('/api/v1/users/updateMe')
+        .send({userName: userThreeSchema.userName})
+        .set('Authorization', 'Bearer ' + userOneToken);
+
+      expect(response.status).toBe(409);
+      expect(response.body).toHaveProperty('error');
+      expect(response.body.error.message).toBe('This username is already taken');
     });
 
     test('should not update user password through this route', async () => {

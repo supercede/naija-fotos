@@ -7,3 +7,5 @@
 # naijaphotos
 
 Something about photos
+
+Docs: https://naijafotos-backend.herokuapp.com/docs

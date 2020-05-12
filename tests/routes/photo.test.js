@@ -1,3 +1,4 @@
+import path from 'path';
 import request from 'supertest';
 import { config } from 'dotenv';
 import mongoose from 'mongoose';
@@ -40,6 +41,22 @@ describe('photos tests', () => {
     expect(response.status).toBe(400);
     expect(response.body).toHaveProperty('error');
     expect(response.body.error.message).toBe('Please upload an image');
+  });
+
+  test('should throw an error if photo is not greater than 500x500', async () => {
+    const imagePath = path.join(__dirname, '../fixtures/media/image.jpg');
+    const response = await request(app)
+      .post('/api/v1/photos')
+      .set('Authorization', 'Bearer ' + userOneToken)
+      .attach('photo', imagePath)
+      .field('description', 'my desc')
+      .field('tags', ['anime', 'HunterxHunter']);
+
+    expect(response.status).toBe(400);
+    expect(response.body).toHaveProperty('error');
+    expect(response.body.error.message).toBe(
+      'File size should be at least than 500px * 500px',
+    );
   });
 
   test('should get all photos', async () => {

@@ -11,6 +11,7 @@ import {
   setupDB,
   tearDownDB,
   incompleteUser,
+  conflictUsername,
 } from '../fixtures/data';
 
 import '../../src/db/mongoose';
@@ -53,6 +54,15 @@ describe('User authentication', () => {
     const response = await request(app)
       .post('/api/v1/auth/signup')
       .send(userSchema);
+
+    expect(response.status).toBe(409);
+    expect(response.body).toHaveProperty('error');
+  });
+
+  test('Should return error if there is a conflicting username', async () => {
+    const response = await request(app)
+      .post('/api/v1/auth/signup')
+      .send(conflictUsername);
 
     expect(response.status).toBe(409);
     expect(response.body).toHaveProperty('error');
@@ -113,6 +123,19 @@ describe('User authentication', () => {
     const response = await request(app)
       .post('/api/v1/auth/login')
       .send({ email: userSchema.userName, password: 'somepasss1234' });
+
+    expect(response.status).toBe(401);
+    expect(response.body).toHaveProperty('error');
+    expect(response.body.error).toHaveProperty(
+      'message',
+      'Incorrect email or password.',
+    );
+  });
+
+  test('Should not log a user in if username is not found', async () => {
+    const response = await request(app)
+      .post('/api/v1/auth/login')
+      .send({ email: 'hisoka119', password: userSchema.password });
 
     expect(response.status).toBe(401);
     expect(response.body).toHaveProperty('error');
