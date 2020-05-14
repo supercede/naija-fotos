@@ -3078,6 +3078,205 @@
             }
           }
         }
+      },
+      "validFollowUserSchema": {
+        "properties": {
+          "role": {
+            "type": "string",
+            "example": "moderator"
+          },
+          "_id": {
+            "type": "string",
+            "format": "mongoose ObjectID",
+            "example": "5ea71dbd8121dd1808f6e463"
+          },
+          "avatar": {
+            "type": "string",
+            "example": "https://res.cloudinary.com/mycloud/image/upload/v1588371243/my-folder/ctdoiku4lurn1a0hwt0t.jpg"
+          },
+          "name": {
+            "type": "string",
+            "example": "Killua Mustang"
+          },
+          "following": {
+            "type": "array",
+            "example": [
+              "5eaafc623d468947a0ec9a82"
+            ]
+          }
+        }
+      },
+      "validFollowerSchema": {
+        "properties": {
+          "_id": {
+            "type": "string",
+            "format": "mongoose ObjectID",
+            "example": "5ea71dbd8121dd1808f6e463"
+          },
+          "avatar": {
+            "type": "string",
+            "example": "https://res.cloudinary.com/mycloud/image/upload/v1588371243/my-folder/ctdoiku4lurn1a0hwt0t.jpg"
+          },
+          "name": {
+            "type": "string",
+            "example": "Killua Mustang"
+          }
+        }
+      },
+      "validUnfollowUserSchema": {
+        "properties": {
+          "role": {
+            "type": "string",
+            "example": "moderator"
+          },
+          "_id": {
+            "type": "string",
+            "format": "mongoose ObjectID",
+            "example": "5ea71dbd8121dd1808f6e463"
+          },
+          "avatar": {
+            "type": "string",
+            "example": "https://res.cloudinary.com/mycloud/image/upload/v1588371243/my-folder/ctdoiku4lurn1a0hwt0t.jpg"
+          },
+          "name": {
+            "type": "string",
+            "example": "Killua Mustang"
+          },
+          "following": {
+            "type": "array",
+            "example": []
+          }
+        }
+      },
+      "validFollowResponseSchema": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "properties": {
+              "message": {
+                "type": "string",
+                "example": "You followed John Doe successfully"
+              },
+              "user": {
+                "type": "object",
+                "$ref": "#/components/schemas/validFollowUserSchema"
+              }
+            }
+          }
+        }
+      },
+      "validUnfollowResponseSchema": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "properties": {
+              "message": {
+                "type": "string",
+                "example": "You unfollowed John Doe successfully"
+              },
+              "user": {
+                "type": "object",
+                "$ref": "#/components/schemas/validUnfollowUserSchema"
+              }
+            }
+          }
+        }
+      },
+      "validGetFollowersResponseSchema": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "followersCount": {
+                "type": "number",
+                "example": 1
+              },
+              "user": {
+                "type": "object",
+                "properties": {
+                  "_id": {
+                    "type": "string",
+                    "format": "mongoose ObjectID",
+                    "example": "5ea71dbd8121dd1808f6e7fe"
+                  },
+                  "name": {
+                    "type": "string",
+                    "example": "Killua Mustang"
+                  },
+                  "userName": {
+                    "type": "string",
+                    "example": "killi_19"
+                  },
+                  "avatar": {
+                    "type": "string",
+                    "example": "https://res.cloudinary.com/mycloud/image/upload/v1588371243/my-folder/ctdoiku4lurn1a0hwt0t.jpg"
+                  },
+                  "followers": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/validFollowerSchema"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "validGetFollowingResponseSchema": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "followingCount": {
+                "type": "number",
+                "example": 1
+              },
+              "user": {
+                "type": "object",
+                "properties": {
+                  "_id": {
+                    "type": "string",
+                    "format": "mongoose ObjectID",
+                    "example": "5ea71dbd8121dd1808f6e7fe"
+                  },
+                  "name": {
+                    "type": "string",
+                    "example": "Killua Mustang"
+                  },
+                  "userName": {
+                    "type": "string",
+                    "example": "killi_19"
+                  },
+                  "avatar": {
+                    "type": "string",
+                    "example": "https://res.cloudinary.com/mycloud/image/upload/v1588371243/my-folder/ctdoiku4lurn1a0hwt0t.jpg"
+                  },
+                  "following": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/validFollowerSchema"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     },
     "parameters": {
