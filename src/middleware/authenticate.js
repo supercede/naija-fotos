@@ -43,7 +43,7 @@ export default {
     if (!roles.includes(req.user.role)) {
       return next(
         new ApplicationError(
-          401,
+          403,
           'You are not authorized to perform this operation',
         ),
       );

@@ -7,7 +7,15 @@ const commentSchema = new mongoose.Schema(
       ref: 'User',
       required: true,
     },
-    comment: {
+    photoId: {
+      type: mongoose.Schema.ObjectId,
+      ref: 'Photo',
+    },
+    collectionId: {
+      type: mongoose.Schema.ObjectId,
+      ref: 'Collection',
+    },
+    content: {
       type: String,
       required: true,
     },
@@ -21,11 +29,28 @@ const commentSchema = new mongoose.Schema(
         ref: 'Favourite',
       },
     ],
+    edited: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,
   },
 );
+
+commentSchema.pre(/^find/, async function(next) {
+  this.populate({
+    path: 'user',
+    select: 'name userName',
+  });
+  next();
+});
+
+commentSchema.pre('findOneAndUpdate', function(next) {
+  this.setUpdate({ $set: { edited: true } });
+  next();
+});
 
 const Comment = mongoose.model('Comment', commentSchema);
 

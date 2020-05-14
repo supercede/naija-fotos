@@ -1,7 +1,9 @@
 import { Router } from 'express';
 import collectionController from '../controllers/collection.controller';
+import commentController from '../controllers/comment.controller';
 import authentication from '../middleware/authenticate';
 import collectionSchema from '../validations/collection.validation';
+import commentSchema from '../validations/comment.validation';
 import catchAsync from '../utils/catchAsync';
 import validator from '../middleware/validator';
 
@@ -16,15 +18,14 @@ const {
   removePhotoFromCollection,
 } = collectionController;
 const { authenticate, isLoggedIn } = authentication;
+
 const { createCollectionSchema, collectionUpdateSchema } = collectionSchema;
+const { createCommentSchema } = commentSchema;
+const { postComment, getPhotoCollectionComments } = commentController;
 
 collectionRouter
   .route('/')
-  .post(
-    authenticate,
-    validator(createCollectionSchema),
-    catchAsync(createCollection),
-  )
+  .post(authenticate, validator(createCollectionSchema), createCollection)
   .get(isLoggedIn, getAllCollections);
 
 collectionRouter
@@ -32,6 +33,11 @@ collectionRouter
   .get(isLoggedIn, getOneCollection)
   .patch(authenticate, validator(collectionUpdateSchema), updateCollection)
   .delete(authenticate, deleteCollection);
+
+collectionRouter
+  .route('/:collectionId/comments')
+  .get(catchAsync(getPhotoCollectionComments))
+  .post(authenticate, validator(createCommentSchema), postComment);
 
 collectionRouter
   .route('/:collectionId/:photoId')

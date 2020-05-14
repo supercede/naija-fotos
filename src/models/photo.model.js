@@ -33,12 +33,6 @@ const photoSchema = new mongoose.Schema(
         ref: 'Favourite',
       },
     ],
-    comments: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Comment',
-      },
-    ],
   },
   {
     timestamps: true,

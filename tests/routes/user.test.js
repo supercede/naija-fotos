@@ -47,7 +47,7 @@ describe('users tests', () => {
 
   describe('get user(s)', () => {
     test('should get all users', async () => {
-      const response = await request(app).get('/api/v1/users');
+      const response = await request(app).get('/api/v1/users?limit=3');
 
       expect(response.status).toBe(200);
       expect(response.body.data).toHaveProperty('users');
@@ -161,12 +161,14 @@ describe('users tests', () => {
     test('should not update user if new userName already exists', async () => {
       const response = await request(app)
         .patch('/api/v1/users/updateMe')
-        .send({userName: userThreeSchema.userName})
+        .send({ userName: userThreeSchema.userName })
         .set('Authorization', 'Bearer ' + userOneToken);
 
       expect(response.status).toBe(409);
       expect(response.body).toHaveProperty('error');
-      expect(response.body.error.message).toBe('This username is already taken');
+      expect(response.body.error.message).toBe(
+        'This username is already taken',
+      );
     });
 
     test('should not update user password through this route', async () => {

@@ -1,59 +1,19 @@
-import { ApplicationError, NotFoundError } from '../helpers/errors';
-import Photo from '../models/photo.model';
-import filterObj from '../helpers/filterObject';
 import Collection from '../models/collection.model';
 import dbqueries from '../utils/dbqueries';
+import utils from '../utils/utils';
 
 const {
   getAll,
   updateOne,
   deleteOne,
   getOne,
+  createOne,
 } = dbqueries;
 
-const verify = async (collectionId, photoId, userId) => {
-  const collection = await Collection.findById(collectionId);
-
-  if (!collection) {
-    throw new NotFoundError('Collection not found');
-  }
-
-  if (collection.user.id !== userId) {
-    throw new ApplicationError(
-      403,
-      'You are not permitted to perform this operation',
-    );
-  }
-
-  const photo = await Photo.findById(photoId);
-
-  if (!photo) {
-    throw new NotFoundError('Photo not found');
-  }
-  return { photo, collection };
-};
+const { verify } = utils;
 
 export default {
-  createCollection: async (req, res) => {
-    req.body.user = req.user._id;
-
-    const collectionObj = filterObj(
-      req.body,
-      'name',
-      'description',
-      'user',
-      'private',
-    );
-
-    const collection = await Collection.create(collectionObj);
-
-    res.status(201).json({
-      status: 'success',
-      data: {
-        collection,
-      },
-    });
-  },
+  createCollection: createOne(Collection, 'name', 'description', 'user', 'private'),
 
   getAllCollections: getAll(Collection),
 

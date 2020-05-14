@@ -4,10 +4,12 @@ import mongoose from 'mongoose';
 import User from '../../src/models/user.model';
 import Photo from '../../src/models/photo.model';
 import Collection from '../../src/models/collection.model';
+import Comment from '../../src/models/comment.model';
 
 const idOne = mongoose.Types.ObjectId();
 const idTwo = mongoose.Types.ObjectId();
 const idThree = mongoose.Types.ObjectId();
+const idAdmin = mongoose.Types.ObjectId();
 
 export const userOneSchema = {
   _id: idOne,
@@ -29,6 +31,17 @@ export const userTwoSchema = {
   },
 };
 
+export const adminUserSchema = {
+  _id: idAdmin,
+  name: 'Ging Freecss',
+  userName: 'clark11',
+  local: {
+    email: 'admin@greedisland.com',
+    password: 'barrywande001',
+  },
+  role: 'admin',
+};
+
 export const userThreeSchema = {
   _id: idThree,
   name: 'Diana Yobe',
@@ -42,10 +55,12 @@ export const userThreeSchema = {
 const userOne = new User(userOneSchema);
 const userTwo = new User(userTwoSchema);
 const userThree = new User(userThreeSchema);
+const adminUser = new User(adminUserSchema);
 
 export const userOneToken = userOne.generateVerificationToken();
 export const userTwoToken = userTwo.generateVerificationToken();
 export const userThreeToken = userThree.generateVerificationToken();
+export const adminToken = adminUser.generateVerificationToken();
 
 export const userSchema = {
   email: 'kolawole1@admin.com',
@@ -122,7 +137,7 @@ const photoFour = {
   user: userOneSchema._id,
 };
 
-const publicCollectionOne = {
+export const publicCollectionOne = {
   upvoteCount: 0,
   tags: [],
   private: false,
@@ -178,11 +193,26 @@ export const privateCollectionOne = {
   user: userThreeSchema._id,
 };
 
+export const commentOne = {
+  _id: '5ebc013f7ab7b10a08d51d91',
+  content: 'looks good',
+  user: userOneSchema._id,
+  collectionId: publicCollectionOne._id,
+};
+
+const commentTwo = {
+  _id: '5ebc50b1f57f241d4039936d',
+  content: 'looks good',
+  user: userOneSchema._id,
+  photoId: photoOne._id,
+};
+
 export const setupDB = async () => {
   await User.deleteMany();
   await new User(userOne).save();
   await new User(userTwo).save();
   await new User(userThree).save();
+  await new User(adminUser).save({ validateBeforeSave: false });
   await Photo.insertMany([photoOne, photoTwo, photoThree, photoFour]);
   await Collection.insertMany([
     publicCollectionOne,
@@ -190,10 +220,12 @@ export const setupDB = async () => {
     publicCollectionThree,
     privateCollectionOne,
   ]);
+  await Comment.insertMany([commentOne, commentTwo]);
 };
 
 export const tearDownDB = async () => {
   await User.deleteMany();
   await Photo.deleteMany();
   await Collection.deleteMany();
+  await Comment.deleteMany();
 };
