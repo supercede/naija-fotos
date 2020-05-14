@@ -1592,6 +1592,418 @@
           }
         }
       }
+    },
+    "api/v1/photos/{photoId}/comments": {
+      "post": {
+        "tags": [
+          "users"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "apiKey"
+            },
+            "required": true,
+            "description": "Bearer token"
+          },
+          {
+            "in": "cookie",
+            "name": "jwt",
+            "schema": {
+              "type": "apiKey"
+            },
+            "required": true,
+            "description": "Cookie can be used in place of Bearer Token"
+          },
+          {
+            "in": "path",
+            "name": "photoId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "id for Photo"
+          }
+        ],
+        "summary": "Post comment to a photo",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "$ref": "#/components/schemas/validCommentRequestSchema"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/validPhotoCommentResponseSchema"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad/malformed request or Validation errors"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "photoId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "id for photo"
+          }
+        ],
+        "summary": "Get comments for a photo",
+        "responses": {
+          "201": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/validListOfCommentsSchema"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad/malformed request or Validation errors"
+          }
+        }
+      }
+    },
+    "api/v1/photos/{collectionId}/comments": {
+      "post": {
+        "tags": [
+          "users"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "apiKey"
+            },
+            "required": true,
+            "description": "Bearer token"
+          },
+          {
+            "in": "cookie",
+            "name": "jwt",
+            "schema": {
+              "type": "apiKey"
+            },
+            "required": true,
+            "description": "Cookie can be used in place of Bearer Token"
+          },
+          {
+            "in": "path",
+            "name": "collectionId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "id for Collection"
+          }
+        ],
+        "summary": "Post comment to a Collection",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "$ref": "#/components/schemas/validCommentRequestSchema"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/validCollectionCommentResponseSchema"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad/malformed request or Validation errors"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "collectionId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "id for Collection"
+          }
+        ],
+        "summary": "Get comments for a Collection",
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/validListOfCommentsSchema"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad/malformed request or Validation errors"
+          }
+        }
+      }
+    },
+    "api/v1/comments": {
+      "get": {
+        "tags": [
+          "admins", "moderators"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "apiKey"
+            },
+            "required": true,
+            "description": "Bearer token"
+          },
+          {
+            "in": "cookie",
+            "name": "jwt",
+            "schema": {
+              "type": "apiKey"
+            },
+            "required": true,
+            "description": "Cookie can be used in place of Bearer Token"
+          }
+        ],
+        "summary": "Get all comments",
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/validListOfCommentsSchema"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad/malformed request or Validation errors"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden (User isn't a moderator or an admin)"
+          }
+        }
+      }
+    },
+    "api/v1/comments/{commentId}": {
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "apiKey"
+            },
+            "required": true,
+            "description": "Bearer token"
+          },
+          {
+            "in": "cookie",
+            "name": "jwt",
+            "schema": {
+              "type": "apiKey"
+            },
+            "required": true,
+            "description": "Cookie can be used in place of Bearer Token"
+          },
+          {
+            "in": "path",
+            "name": "commentId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "id for comment"
+          }
+        ],
+        "summary": "Get one Comment",
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/validCollectionResponseSchema"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad/malformed request or Validation errors"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden (User isn't a moderator or an admin)"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "users"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "apiKey"
+            },
+            "required": true,
+            "description": "Bearer token"
+          },
+          {
+            "in": "cookie",
+            "name": "jwt",
+            "schema": {
+              "type": "apiKey"
+            },
+            "required": true,
+            "description": "Cookie can be used in place of Bearer Token"
+          },
+          {
+            "in": "path",
+            "name": "commentId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "id for Comment"
+          }
+        ],
+        "summary": "Update an existing comment",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "$ref": "#/components/schemas/validCommentRequestSchema"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/validCommentUpdateResponseSchema"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad/malformed request or Validation errors"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Comment not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "users"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "apiKey"
+            },
+            "required": true,
+            "description": "Bearer token"
+          },
+          {
+            "in": "cookie",
+            "name": "jwt",
+            "schema": {
+              "type": "apiKey"
+            },
+            "required": true,
+            "description": "Cookie can be used in place of Bearer Token"
+          },
+          {
+            "in": "path",
+            "name": "commentId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "id for comment"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "success (No content)"
+          },
+          "400": {
+            "description": "Bad/malformed request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -2464,6 +2876,203 @@
                       "$ref": "#/components/schemas/validFollowerSchema"
                     }
                   }
+                }
+              }
+            }
+          }
+        }
+      },
+      "validCommentRequestSchema": {
+        "properties": {
+          "content": {
+            "type": "string",
+            "example": "This is magnificient"
+          }
+        }
+      },
+      "validCollectionCommentSchema": {
+        "properties": {
+          "_id": {
+            "type": "string",
+            "format": "mongoose ObjectID",
+            "example": "5ea71dbd8121dd1808f6e7fe"
+          },
+          "content": {
+            "type": "string",
+            "example": "This is magnificient"
+          },
+          "user": {
+            "type": "string",
+            "format": "mongoose ObjectID",
+            "example": "5eaafc623d468947a0ec9a82"
+          },
+          "collectionId": {
+            "type": "string",
+            "format": "mongoose ObjectID",
+            "example": "5ebb3a8a57db512a38486c62"
+          }
+        }
+      },
+      "validPhotoCommentSchema": {
+        "properties": {
+          "_id": {
+            "type": "string",
+            "format": "mongoose ObjectID",
+            "example": "5ea71dbd8121dd1808f6e7fe"
+          },
+          "content": {
+            "type": "string",
+            "example": "This is magnificient"
+          },
+          "user": {
+            "type": "string",
+            "format": "mongoose ObjectID",
+            "example": "5eaafc623d468947a0ec9a82"
+          },
+          "photoId": {
+            "type": "string",
+            "format": "mongoose ObjectID",
+            "example": "5ebb3a8a57db512a38486c62"
+          }
+        }
+      },
+      "validCommentUpdateSchema": {
+        "properties": {
+          "_id": {
+            "type": "string",
+            "format": "mongoose ObjectID",
+            "example": "5ea71dbd8121dd1808f6e7fe"
+          },
+          "content": {
+            "type": "string",
+            "example": "This is magnificient"
+          },
+          "user": {
+            "type": "string",
+            "format": "mongoose ObjectID",
+            "example": "5eaafc623d468947a0ec9a82"
+          },
+          "photoId": {
+            "type": "string",
+            "format": "mongoose ObjectID",
+            "example": "5ebb3a8a57db512a38486c62"
+          },
+          "edited": {
+            "type": "string",
+            "example": true
+          }
+        }
+      },
+      "validCommentUpdateResponseSchema": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "comment": {
+                "type": "object",
+                "$ref": "#/components/schemas/validCommentUpdateSchema"
+              }
+            }
+          }
+        }
+      },
+      "validPhotoCommentResponseSchema": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "comment": {
+                "type": "object",
+                "$ref": "#/components/schemas/validPhotoCommentSchema"
+              }
+            }
+          }
+        }
+      },
+      "validCollectionCommentResponseSchema": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "comment": {
+                "type": "object",
+                "$ref": "#/components/schemas/validCollectionCommentSchema"
+              }
+            }
+          }
+        }
+      },
+      "validSoftUserSchema": {
+        "properties": {
+                  "_id": {
+                    "type": "string",
+                    "format": "mongoose ObjectID",
+                    "example": "5ea71dbd8121dd1808f6e7fe"
+                  },
+                  "name": {
+                    "type": "string",
+                    "example": "Killua Mustang"
+                  },
+                  "userName": {
+                    "type": "string",
+                    "example": "killi_19"
+                  },
+                  "avatar": {
+                    "type": "string",
+                    "example": "https://res.cloudinary.com/mycloud/image/upload/v1588371243/my-folder/ctdoiku4lurn1a0hwt0t.jpg"
+                  }
+                }
+      },
+      "validFullCommentSchema": {
+        "properties": {
+          "_id": {
+            "type": "string",
+            "format": "mongoose ObjectID",
+            "example": "5ea71dbd8121dd1808f6e7fe"
+          },
+          "content": {
+            "type": "string",
+            "example": "This is magnificient"
+          },
+          "user": {
+            "type": "object",
+            "$ref": "#/components/schemas/validSoftUserSchema"
+          },
+          "photoId": {
+            "type": "string",
+            "format": "mongoose ObjectID",
+            "example": "5ebb3a8a57db512a38486c62"
+          }
+        }
+      },
+      "validListOfCommentsSchema": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "success"
+          },
+          "total": {
+            "type": "number",
+            "example": 1
+          },
+          "data": {
+            "properties": {
+              "comments": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/validFullCommentSchema"
                 }
               }
             }

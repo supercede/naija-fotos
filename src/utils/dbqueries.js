@@ -5,8 +5,41 @@ import authorize from './authorize';
 import filterObj from '../helpers/filterObject';
 import deleteImage from '../helpers/deleteImage';
 import { NotFoundError } from '../helpers/errors';
+import Photo from '../models/photo.model';
+import Collection from '../models/collection.model';
+import utils from './utils';
+
+const { checkIfExists } = utils;
 
 export default {
+  createOne: (Model, ...fields) =>
+    catchAsync(async (req, res) => {
+      req.body.user = req.user._id;
+      if (req.params.photoId) {
+        await checkIfExists(Photo, req.params.photoId);
+        req.body.photoId = req.params.photoId;
+      }
+
+      if (req.params.collectionId) {
+        await checkIfExists(Collection, req.params.collectionId);
+        req.body.collectionId = req.params.collectionId;
+      }
+
+      const collectionObj = filterObj(req.body, ...fields);
+
+      const doc = await Model.create(collectionObj);
+
+      const modelName = Model.collection.collectionName.slice(0, -1);
+      const data = {};
+
+      data[modelName] = doc;
+
+      res.status(201).json({
+        status: 'success',
+        data,
+      });
+    }),
+
   getAll: Model =>
     catchAsync(async (req, res) => {
       const filter = {};
@@ -23,6 +56,8 @@ export default {
         filter.private = false;
       }
 
+      const totalCount = await Model.countDocuments(filter);
+
       const features = new SearchFeatures(Model.find(filter), req.query)
         .filter()
         .sort()
@@ -31,13 +66,20 @@ export default {
 
       const doc = await features.query;
 
+      const { limit } = features.query.options;
+      const { page = 1 } = features.queryStr;
+
       const data = {};
       data[`${Model.collection.collectionName}`] = doc;
 
       res.status(200).json({
         status: 'success',
-        results: doc.length,
+        total: totalCount,
         data,
+        meta: {
+          page: parseInt(page, 10),
+          limit,
+        },
       });
     }),
 
