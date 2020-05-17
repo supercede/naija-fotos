@@ -4,7 +4,6 @@ import mongoose from 'mongoose';
 import passport from 'passport';
 
 import app from '../../src/app';
-import User from '../../src/models/user.model';
 
 import { setupDB, tearDownDB } from '../fixtures/data';
 import { facebookProfile, googleProfile } from '../fixtures/social-profile';

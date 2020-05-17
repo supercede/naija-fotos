@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css" />
+    <title>Document</title>
+</head>
+
+<body>
+    <h1 id="naijafotos-backend">Naijafotos-Backend</h1>
+    <p><a href="https://travis-ci.org/supercede/naija-fotos"><img
+                src="https://travis-ci.org/supercede/naija-fotos.svg?branch=develop" alt="Build Status"></a></p>
+    <p><a href="https://coveralls.io/github/supercede/naija-fotos?branch=develop"><img
+                src="https://coveralls.io/repos/github/supercede/naija-fotos/badge.svg?branch=develop"
+                alt="Coverage Status"></a></p>
+    <p><a href="https://codeclimate.com/github/supercede/naija-fotos/maintainability"><img
+                src="https://api.codeclimate.com/v1/badges/31925e7a3893eabb61f3/maintainability"
+                alt="Maintainability"></a></p>
+    <p>Naijafotos is a photo repository designd to show the beauty of photography by Nigerians. Whether professionals or
+        amateurs, users are encouraged to share their stories with the world in pictures. </p>
+    <h3 id="prerequisites">Prerequisites</h3>
+    <p>Ensure you have the following installed on your local machine:</p>
+    <ul>
+        <li><a href="https://nodejs.org/en/download/">NodeJS</a></li>
+        <li><a href="https://www.mongodb.com/download-center/community">MongoDB</a> or <a
+                href="https://www.mongodb.com/download-center/cloud">Mongo Atlas</a></li>
+        <li><a href="https://www.docker.com/products/docker-desktop">Docker</a> to run in a containerized environment
+            (optional)</li>
+    </ul>
+    <h2 id="technologies-used">Technologies Used</h2>
+    <ul>
+        <li><a href="https://nodejs.org/en/download/">NodeJS</a></li>
+        <li><a href="https://expressjs.com/">ExpressJS</a></li>
+        <li><a href="https://www.mongodb.com/cloud/atlas">Mongo Atlas</a></li>
+        <li><a href="https://mongoosejs.com/">Mongoose</a></li>
+        <li><a href="https://pugjs.org/">Pug</a></li>
+    </ul>
+    <h2 id="project-pipeline">Project Pipeline</h2>
+    <ul>
+        <li><a href="https://www.pivotaltracker.com/n/projects/2444330">Pivotal Tracker stories</a></li>
+        <li><a href="https://naijafotos-backend.herokuapp.com/">Hosted API</a></li>
+        <li><a href="https://naijafotos-backend.herokuapp.com/docs">API Docs</a></li>
+    </ul>
+    <h3 id="installing-running-locally">Installing/Running locally</h3>
+    <ul>
+        <li>
+            <p>Clone or fork repo🤷‍♂</p>
+            <pre><code class="lang-bash">  -<span class="ruby"> git clone &lt;repo&gt;
+</span>  -<span class="ruby"> cd naijafotos
+</span>  -<span class="ruby"> npm install</span>
+</code></pre>
+        </li>
+        <li>
+            <p>Create/configure <code>.env</code> environment with your credentials. A sample <code>.env.example</code>
+                file has been provided to get you started. Make a duplicate of <code>.env.example</code> and rename to
+                <code>.env</code>, then configure your credentials (ensure to provide the correct details).</p>
+        </li>
+        <li>
+            <p>Run <code>npm run dev</code> to start the server and watch for changes </p>
+        </li>
+    </ul>
+    <h3 id="to-build-and-run-in-docker">To build and run in docker</h3>
+    <ul>
+        <li>
+            <p>After cloning and configuring your <code>.env</code> file,</p>
+            <pre><code>    - docker <span class="hljs-keyword">volume</span><span class="bash"> create --name=mongo_external
+</span>    - npm <span class="hljs-keyword">run</span><span class="bash"> docker:build
+</span>    - npm install
+</code></pre>
+        </li>
+    </ul>
+    <h2 id="http-requests">HTTP Requests</h2>
+    <p>All API requests are made by sending a secure HTTPS request using one of the following methods, depending on the
+        action being taken:</p>
+    <ul>
+        <li><code>POST</code> Create a resource</li>
+        <li><code>GET</code> Get a resource or list of resources</li>
+        <li><code>PATCH</code> Update a resource</li>
+        <li><code>DELETE</code> Delete a resource</li>
+    </ul>
+    <p>For <code>POST</code> and <code>PATCH</code> requests, the body of your request may include a JSON payload.</p>
+    <h3 id="http-response-codes">HTTP Response Codes</h3>
+    <p>Each response will be returned with one of the following HTTP status codes:</p>
+    <ul>
+        <li><code>200</code> <code>OK</code> The request was successful</li>
+        <li><code>201</code> <code>Created</code> Successful request, A new resource has been created</li>
+        <li><code>204</code> <code>No Content</code> Request was successful but there&#39;s no request returned (Used in
+            Delete requests)</li>
+        <li><code>400</code> <code>Validation Errors or Bad Request</code> There was a problem with the request
+            (malformed)</li>
+        <li><code>401</code> <code>Unauthorized</code> The supplied API credentials are invalid</li>
+        <li><code>403</code> <code>Forbidden</code> The credentials provided do not have permissions to access the
+            requested resource</li>
+        <li><code>404</code> <code>Not Found</code> An attempt was made to access a resource that does not exist in the
+            API</li>
+        <li><code>409</code> <code>Conflict</code> Data already exists in the database (Used when trying to sign up or
+            update a unique field)</li>
+        <li><code>500</code> <code>Server Error</code> An error occurred on the server</li>
+    </ul>
+    <h2 id="documentation">Documentation</h2>
+    <p>Check documentation <a href="https://naijafotos-backend.herokuapp.com/docs">here</a></p>
+
+</body>
+
+</html>

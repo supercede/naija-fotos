@@ -2,6 +2,7 @@ import express from 'express';
 import { config } from 'dotenv';
 import logger from 'morgan';
 import passport from 'passport';
+import path from 'path';
 import cookieParser from 'cookie-parser';
 import swaggerUI from 'swagger-ui-express';
 
@@ -18,6 +19,9 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use(cookieParser());
 
+const staticPath = path.join(__dirname, '../public');
+app.use(express.static(staticPath));
+
 if (['development', 'production'].includes(process.env.NODE_ENV)) {
   app.use(logger('dev'));
 }
@@ -27,10 +31,7 @@ app.use('/api/v1', routes);
 app.use('/docs', swaggerUI.serve, swaggerUI.setup(docs));
 
 app.get('/', (_, res) => {
-  res.status(200).json({
-    status: 'success',
-    message: 'Welcome to the Naijafotos API',
-  });
+  res.render('index');
 });
 
 app.all('*', (_, res) => {

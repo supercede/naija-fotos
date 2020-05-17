@@ -19,10 +19,6 @@ const commentSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    upvoteCount: {
-      type: Number,
-      default: 0,
-    },
     edited: {
       type: Boolean,
       default: false,

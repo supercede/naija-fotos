@@ -27,6 +27,7 @@
     "arrow-parens": ["error", "as-needed"],
     "import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
     "max-len": ["error", { "ignoreComments": true, "code": 100, "ignoreTemplateLiterals": true, "ignoreStrings": true }],
-    "space-before-function-paren": "off"
+    "space-before-function-paren": "off",
+    "no-underscore-dangle": "off"
   }
 }

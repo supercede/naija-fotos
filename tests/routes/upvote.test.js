@@ -1,25 +1,17 @@
 import request from 'supertest';
-import { config } from 'dotenv';
 import mongoose from 'mongoose';
 import app from '../../src/app';
-import User from '../../src/models/user.model';
 import {
-  userSchema,
   setupDB,
   tearDownDB,
-  incompleteUser,
   userOneToken,
   userTwoToken,
-  commentOne,
   publicCollectionOne,
   photoOne,
-  userOneSchema,
   userTwoSchema,
-  adminToken,
 } from '../fixtures/data';
 
 import '../../src/db/mongoose';
-import Comment from '../../src/models/comment.model';
 
 beforeAll(async () => {
   await setupDB();

@@ -12,6 +12,10 @@ const collectionSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    commentCount: {
+      type: Number,
+      default: 0,
+    },
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',

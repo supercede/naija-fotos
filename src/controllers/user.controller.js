@@ -103,9 +103,11 @@ export default {
       );
     }
 
-    const checkUserName = await User.checkExistingUserName(req.body.userName);
-    if (checkUserName) {
-      throw new ApplicationError(409, 'This username is already taken');
+    if (req.body.userName) {
+      const checkUserName = await User.checkExistingUserName(req.body.userName);
+      if (checkUserName) {
+        throw new ApplicationError(409, 'This username is already taken');
+      }
     }
 
     // allow only accepted fields
@@ -115,6 +117,8 @@ export default {
       'portfolio',
       'email',
       'userName',
+      'bio',
+      'interests',
     );
 
     const updatedUser = await User.findByIdAndUpdate(_id, updates, {

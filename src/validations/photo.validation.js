@@ -17,7 +17,7 @@ export default {
 
     check('tags.*')
       .isString()
-      .withMessage('Expected a string'),
+      .withMessage('Expected tags to be an array of strings'),
   ],
 
   photoUpdateSchema: [

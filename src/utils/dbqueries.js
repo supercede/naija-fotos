@@ -9,20 +9,30 @@ import Photo from '../models/photo.model';
 import Collection from '../models/collection.model';
 import utils from './utils';
 
-const { checkIfExists } = utils;
+const { checkIfExists, updateCount } = utils;
 
 export default {
   createOne: (Model, ...fields) =>
     catchAsync(async (req, res) => {
+      let relatedModel, id;
+
       req.body.user = req.user._id;
       if (req.params.photoId) {
         await checkIfExists(Photo, req.params.photoId);
         req.body.photoId = req.params.photoId;
+        id = req.params.photoId;
+        relatedModel = Photo;
       }
 
       if (req.params.collectionId) {
         await checkIfExists(Collection, req.params.collectionId);
         req.body.collectionId = req.params.collectionId;
+        id = req.params.collectionId;
+        relatedModel = Collection;
+      }
+
+      if (Model.collection.collectionName === 'comments') {
+        await updateCount(relatedModel, id, 1, 'commentCount');
       }
 
       const collectionObj = filterObj(req.body, ...fields);
@@ -168,15 +178,30 @@ export default {
 
   deleteOne: Model =>
     catchAsync(async (req, res) => {
+      let relatedModel, modelId;
+
       const { id, role } = req.user;
 
       const { itemId } = req.params;
 
       await authorize(Model, itemId, id, role);
 
-      const deletedPhoto = await Model.findByIdAndRemove(itemId);
+      const deletedItem = await Model.findByIdAndRemove(itemId);
       if (Model.collection.collectionName === 'photos') {
-        deleteImage(deletedPhoto.imageURL);
+        deleteImage(deletedItem.imageURL);
+      }
+
+      if (Model.collection.collectionName === 'comments') {
+        if (deletedItem.collectionId) {
+          relatedModel = Collection;
+          modelId = deletedItem.collectionId;
+        }
+        if (deletedItem.photoId) {
+          relatedModel = Photo;
+          modelId = deletedItem.photoId;
+        }
+
+        await updateCount(relatedModel, modelId, -1, 'commentCount');
       }
 
       res.status(204).json({

@@ -34,4 +34,17 @@ export default {
     }
     return { photo, collection };
   },
+
+  updateCount: async (Model, id, val, field) => {
+    const doc = await Model.findOneAndUpdate(
+      { _id: id },
+      { $inc: { [`${field}`]: val } },
+      {
+        new: true,
+        runValidators: true,
+      },
+    ).select('name imageURL description user upvoteCount');
+
+    return doc;
+  },
 };

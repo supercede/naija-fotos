@@ -1,17 +1,8 @@
 import path from 'path';
 import request from 'supertest';
-import { config } from 'dotenv';
 import mongoose from 'mongoose';
 import app from '../../src/app';
-import User from '../../src/models/user.model';
-import {
-  photoOne,
-  userSchema,
-  setupDB,
-  tearDownDB,
-  incompleteUser,
-  userOneToken,
-} from '../fixtures/data';
+import { setupDB, tearDownDB, userOneToken } from '../fixtures/data';
 
 import '../../src/db/mongoose';
 

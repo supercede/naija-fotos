@@ -1,20 +1,15 @@
+/* eslint-disable no-undef */
 import request from 'supertest';
-import { config } from 'dotenv';
 import mongoose from 'mongoose';
 import app from '../../src/app';
-import User from '../../src/models/user.model';
 import {
-  userSchema,
   setupDB,
   tearDownDB,
-  incompleteUser,
   userOneToken,
   userTwoToken,
   commentOne,
   publicCollectionOne,
   photoOne,
-  userOneSchema,
-  adminUserSchema,
   adminToken,
 } from '../fixtures/data';
 
@@ -187,7 +182,9 @@ describe('Comments test', () => {
         `/api/v1/collections/${publicCollectionOne._id}/comments`,
       );
 
-      const total = await Comment.countDocuments({ collectionId: publicCollectionOne._id });
+      const total = await Comment.countDocuments({
+        collectionId: publicCollectionOne._id,
+      });
 
       expect(response.status).toBe(200);
       expect(response.body.data).toHaveProperty('comments');

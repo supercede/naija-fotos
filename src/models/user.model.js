@@ -43,6 +43,12 @@ const userSchema = new mongoose.Schema(
       id: String,
       email: String,
     },
+    interests: [
+      {
+        type: String,
+      },
+    ],
+    bio: String,
     passwordResetToken: String,
     passwordResetTokenExpires: Date,
     active: {
@@ -73,18 +79,6 @@ const userSchema = new mongoose.Schema(
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
-      },
-    ],
-    comments: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Comment',
-      },
-    ],
-    upvotes: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Favourite',
       },
     ],
   },

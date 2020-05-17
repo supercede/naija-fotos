@@ -11,8 +11,6 @@ describe('App Setup', () => {
     const response = await request(app).get('/');
 
     expect(response.status).toBe(200);
-    expect(response.body.status).toBe('success');
-    expect(response.body.message).toBe('Welcome to the Naijafotos API');
   });
 
   test('error if an invalid route is requested', async () => {
