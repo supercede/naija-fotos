@@ -7,6 +7,7 @@ import { AvatarUploads } from '../services/imageUpload';
 import authentication from '../middleware/authenticate';
 import photoController from '../controllers/photo.controller';
 import collectionController from '../controllers/collection.controller';
+import upvoteController from '../controllers/upvote.controller';
 
 const { userUpdateSchema } = userSchema;
 
@@ -26,6 +27,8 @@ const {
 const { getAllPhotos } = photoController;
 
 const { getAllCollections } = collectionController;
+
+const { getResourceLikes } = upvoteController;
 
 const userRouter = Router();
 
@@ -53,6 +56,8 @@ userRouter.get(
   getMe,
   catchAsync(getUserFollowing),
 );
+
+userRouter.get('/myLikes', authenticate, getMe, getResourceLikes);
 
 userRouter.get('/:userId', catchAsync(getUser));
 userRouter.get('/:userId/photos', catchAsync(getAllPhotos));
@@ -89,6 +94,8 @@ userRouter.get(
   authenticate,
   catchAsync(getUserFollowing),
 );
+
+userRouter.get('/:userId/votes', authenticate, getResourceLikes);
 
 userRouter.delete('/deleteMe', authenticate, catchAsync(deleteMe));
 

@@ -42,7 +42,7 @@ const photoSchema = new mongoose.Schema(
 photoSchema.pre(/^find$/, async function(next) {
   this.populate({
     path: 'user',
-    select: 'name userName avatar',
+    select: 'name avatar',
   });
   next();
 });

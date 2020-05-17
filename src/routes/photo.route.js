@@ -7,6 +7,7 @@ import commentSchema from '../validations/comment.validation';
 import catchAsync from '../utils/catchAsync';
 import validator from '../middleware/validator';
 import authentication from '../middleware/authenticate';
+import upvoteController from '../controllers/upvote.controller';
 
 const { authenticate } = authentication;
 const {
@@ -16,6 +17,8 @@ const {
   getOnePhoto,
   updatePhoto,
 } = photoController;
+
+const { likeOrUnlikeResource, getResourceLikes } = upvoteController;
 
 const { postComment, getPhotoCollectionComments } = commentController;
 
@@ -43,6 +46,11 @@ photoRouter
   .route('/:photoId/comments')
   .get(catchAsync(getPhotoCollectionComments))
   .post(authenticate, validator(createCommentSchema), postComment);
+
+photoRouter
+  .route('/:photoId/vote')
+  .post(authenticate, catchAsync(likeOrUnlikeResource))
+  .get(authenticate, getResourceLikes);
 
 // photoRouter.route('/:photoId/tag');
 

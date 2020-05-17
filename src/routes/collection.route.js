@@ -6,6 +6,7 @@ import collectionSchema from '../validations/collection.validation';
 import commentSchema from '../validations/comment.validation';
 import catchAsync from '../utils/catchAsync';
 import validator from '../middleware/validator';
+import upvoteController from '../controllers/upvote.controller';
 
 const collectionRouter = Router();
 const {
@@ -17,6 +18,8 @@ const {
   addPhotoToCollection,
   removePhotoFromCollection,
 } = collectionController;
+const { likeOrUnlikeResource, getResourceLikes } = upvoteController;
+
 const { authenticate, isLoggedIn } = authentication;
 
 const { createCollectionSchema, collectionUpdateSchema } = collectionSchema;
@@ -38,6 +41,11 @@ collectionRouter
   .route('/:collectionId/comments')
   .get(catchAsync(getPhotoCollectionComments))
   .post(authenticate, validator(createCommentSchema), postComment);
+
+collectionRouter
+  .route('/:collectionId/vote')
+  .post(authenticate, catchAsync(likeOrUnlikeResource))
+  .get(authenticate, getResourceLikes);
 
 collectionRouter
   .route('/:collectionId/:photoId')

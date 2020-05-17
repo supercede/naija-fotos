@@ -23,12 +23,6 @@ const commentSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
-    upvotes: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Favourite',
-      },
-    ],
     edited: {
       type: Boolean,
       default: false,

@@ -120,6 +120,8 @@ userSchema.methods.toJSON = function() {
   const user = this;
 
   const userObj = this.toObject();
+  userObj.id = userObj._id;
+  delete userObj._id;
   if (userObj.local) delete userObj.local.password;
   return userObj;
 };

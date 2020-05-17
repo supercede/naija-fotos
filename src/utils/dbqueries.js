@@ -42,6 +42,7 @@ export default {
 
   getAll: Model =>
     catchAsync(async (req, res) => {
+      let populate, select;
       const filter = {};
       if (req.query.tag) {
         filter.tags = req.query.tag;
@@ -49,6 +50,24 @@ export default {
 
       if (req.params.userId) {
         filter.user = req.params.userId;
+      }
+
+      if (req.params.photoId) {
+        await checkIfExists(Photo, req.params.photoId);
+        filter.photoId = req.params.photoId;
+      } else if (req.params.collectionId) {
+        await checkIfExists(Collection, req.params.collectionId);
+        filter.collectionId = req.params.collectionId;
+      }
+
+      if (Model.collection.collectionName === 'favourites') {
+        if (req.params.userId) {
+          populate = 'photoId collectionId';
+          select = 'name imageURL upvoteCount';
+        } else {
+          populate = 'user';
+          select = 'name avatar userName';
+        }
       }
 
       if (
@@ -64,7 +83,7 @@ export default {
         .fieldLimit()
         .pagination();
 
-      const doc = await features.query;
+      const doc = await features.query.populate(populate, select);
 
       const { limit } = features.query.options;
       const { page = 1 } = features.queryStr;
