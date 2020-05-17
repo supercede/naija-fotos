@@ -2,7 +2,7 @@ import crypto from 'crypto';
 import passport from 'passport';
 import debug from 'debug';
 
-import passportLocal from '../config/passport/passport-local';
+import passportLocal from '../services/passport/passport-local';
 import { ApplicationError, NotFoundError } from '../helpers/errors';
 import User from '../models/user.model';
 import Email from '../services/emails';

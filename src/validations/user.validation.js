@@ -29,5 +29,23 @@ export default {
       .optional()
       .isURL()
       .withMessage('Personal website must be a URL'),
+
+    check('bio')
+      .optional()
+      .isString()
+      .withMessage('Expect bio to be a string')
+      .trim()
+      .isLength({ max: 400 })
+      .withMessage('Bio cannot be more than 400 characters'),
+
+    check('interests')
+      .optional()
+      .isArray({ min: 1 })
+      .withMessage('Interests should be an array'),
+
+    check('interests.*')
+      .isString()
+      .withMessage('Expected interests to be an array of strings')
+      .trim(),
   ],
 };

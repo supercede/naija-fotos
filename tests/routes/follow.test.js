@@ -1,17 +1,13 @@
 import request from 'supertest';
-import { config } from 'dotenv';
 import mongoose from 'mongoose';
 import app from '../../src/app';
 import User from '../../src/models/user.model';
 import {
   userOneSchema,
   userTwoSchema,
-  userSchema,
   setupDB,
   tearDownDB,
-  incompleteUser,
   userOneToken,
-  userThreeToken,
 } from '../fixtures/data';
 
 import '../../src/db/mongoose';

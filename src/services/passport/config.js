@@ -32,6 +32,7 @@ passport.use(
     User.findOne({ _id: jwtPayload.id })
       .then(user => {
         if (user) {
+          delete user._doc.local.password;
           done(null, user);
         } else {
           done(null, false);

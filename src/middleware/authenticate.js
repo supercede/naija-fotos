@@ -1,5 +1,5 @@
 import debug from 'debug';
-import passportJWT from '../config/passport/config';
+import passportJWT from '../services/passport/config';
 import { ApplicationError } from '../helpers/errors';
 
 // export default function authenticate(req, res, next) {
@@ -22,7 +22,7 @@ export default {
       }
 
       req.user = user;
-      DEBUG(user.userName);
+      // DEBUG(user.userName);
       return next();
     })(req, res, next);
   },

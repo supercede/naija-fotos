@@ -3423,8 +3423,8 @@
           "data": {
             "properties": {
               "photo": {
-              "type": "object",
-              "$ref": "#/components/schemas/validPhotoSchema"
+                "type": "object",
+                "$ref": "#/components/schemas/validPhotoSchema"
               },
               "message": {
                 "type": "string",
@@ -3443,8 +3443,8 @@
           "data": {
             "properties": {
               "photo": {
-              "type": "object",
-              "$ref": "#/components/schemas/validPhotoSchema"
+                "type": "object",
+                "$ref": "#/components/schemas/validPhotoSchema"
               },
               "message": {
                 "type": "string",
@@ -3463,8 +3463,8 @@
           "data": {
             "properties": {
               "collection": {
-              "type": "object",
-              "$ref": "#/components/schemas/validCollectionSchema"
+                "type": "object",
+                "$ref": "#/components/schemas/validCollectionSchema"
               },
               "message": {
                 "type": "string",
@@ -3483,8 +3483,8 @@
           "data": {
             "properties": {
               "collection": {
-              "type": "object",
-              "$ref": "#/components/schemas/validCollectionSchema"
+                "type": "object",
+                "$ref": "#/components/schemas/validCollectionSchema"
               },
               "message": {
                 "type": "string",
@@ -3624,7 +3624,7 @@
           "example": "url?limit=10"
         },
         "required": false,
-        "description": "To limit amount of results released per 'page'"
+        "description": "To limit amount of results released per 'page'. Default is 10"
       },
       "pageParam": {
         "in": "query",

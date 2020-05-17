@@ -2,25 +2,11 @@
 import Photo from '../models/photo.model';
 import Collection from '../models/collection.model';
 import dbqueries from '../utils/dbqueries';
-import SearchFeatures from '../utils/searchFeatures';
 import utils from '../utils/utils';
 import Favourite from '../models/favourite.model';
 
-const { getAll, updateOne, deleteOne, getOne, createOne } = dbqueries;
-const { checkIfExists } = utils;
-
-const updateCount = async (Model, id, val) => {
-  const doc = await Model.findOneAndUpdate(
-    { _id: id },
-    { $inc: { upvoteCount: val } },
-    {
-      new: true,
-      runValidators: true,
-    },
-  ).select('name imageURL description user upvoteCount');
-
-  return doc;
-};
+const { getAll } = dbqueries;
+const { checkIfExists, updateCount } = utils;
 
 export default {
   likeOrUnlikeResource: async (req, res) => {
@@ -54,11 +40,11 @@ export default {
       });
 
       like = true;
-      doc = await updateCount(Model, id, 1);
+      doc = await updateCount(Model, id, 1, 'upvoteCount');
     } else {
       await Favourite.findOneAndDelete({ [`${field}`]: id, user: user._id });
       like = false;
-      doc = await updateCount(Model, id, -1);
+      doc = await updateCount(Model, id, -1, 'upvoteCount');
     }
 
     const modelName = Model.collection.collectionName.slice(0, -1);

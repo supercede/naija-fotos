@@ -29,7 +29,6 @@ passport.use(
       if (!checkPassword) {
         return cb(null, false, { message: 'Incorrect email or password.' });
       }
-
       return cb(null, user, { message: 'Logged In Successfully' });
     } catch (err) {
       DEBUG(err);

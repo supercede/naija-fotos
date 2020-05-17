@@ -5,7 +5,13 @@ import Comment from '../models/comment.model';
 import SearchFeatures from '../utils/searchFeatures';
 import utils from '../utils/utils';
 
-const { getAll, updateOne, deleteOne, getOne, createOne } = dbqueries;
+const {
+  getAll,
+  updateOne,
+  deleteOne,
+  getOne,
+  createOne,
+} = dbqueries;
 const { checkIfExists } = utils;
 
 export default {

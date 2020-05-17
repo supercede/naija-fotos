@@ -1,4 +1,3 @@
-/* eslint-disable no-undef, no-underscore-dangle */
 import request from 'supertest';
 import { config } from 'dotenv';
 import mongoose from 'mongoose';

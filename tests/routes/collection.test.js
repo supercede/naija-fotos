@@ -1,13 +1,10 @@
+/* eslint-disable no-undef */
 import request from 'supertest';
-import { config } from 'dotenv';
 import mongoose from 'mongoose';
 import app from '../../src/app';
-import User from '../../src/models/user.model';
 import {
-  userSchema,
   setupDB,
   tearDownDB,
-  incompleteUser,
   userOneToken,
   userTwoToken,
   userThreeToken,

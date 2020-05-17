@@ -1,0 +1,13 @@
+body {
+  font-family: 'Open Sans', sans-serif;
+  margin: 0 2vw;
+}
+code {
+  background-color: #f6f8fa;
+  display: inline-block;
+  padding: 3px 3px;
+}
+
+a {
+  text-decoration: none;
+}

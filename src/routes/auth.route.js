@@ -1,12 +1,12 @@
 import { Router } from 'express';
 import passport from 'passport';
-import passportJWT from '../config/passport/config';
+import passportJWT from '../services/passport/config';
 import authController from '../controllers/auth.controller';
 import authSchema from '../validations/auth.validation';
 import validator from '../middleware/validator';
 import catchAsync from '../utils/catchAsync';
-import passportGoogle from '../config/passport/passport-google';
-import passportFacebook from '../config/passport/passport-facebook';
+import passportGoogle from '../services/passport/passport-google';
+import passportFacebook from '../services/passport/passport-facebook';
 
 const {
   signup,
