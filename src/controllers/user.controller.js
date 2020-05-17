@@ -5,6 +5,10 @@ import User from '../models/user.model';
 import deleteImage from '../helpers/deleteImage';
 import filterObj from '../helpers/filterObject';
 import SearchFeatures from '../utils/searchFeatures';
+import dbqueries from '../utils/dbqueries';
+import Favourite from '../models/favourite.model';
+
+const { getAll } = dbqueries;
 
 export default {
   uploadAvatar: async (req, res) => {
@@ -162,6 +166,7 @@ export default {
         req.user._id,
         {
           $addToSet: { following: userId },
+          // inc count
         },
         {
           new: true,
@@ -235,7 +240,7 @@ export default {
 
     const { followers } = user;
     const followersCount = followers.length;
-
+    // Paginate
     res.status(200).json({
       status: 'success',
       data: {
@@ -267,4 +272,6 @@ export default {
       },
     });
   },
+
+  getUserLikes: getAll(Favourite),
 };

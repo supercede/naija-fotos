@@ -6,7 +6,6 @@ import nodemailer from 'nodemailer';
 import app from '../../src/app';
 import User from '../../src/models/user.model';
 import {
-  userOne,
   userSchema,
   setupDB,
   tearDownDB,
@@ -21,8 +20,6 @@ config();
 const sendMailMock = jest.fn();
 
 jest.mock('nodemailer');
-
-// const nodemailer = require('nodemailer');
 
 nodemailer.createTransport.mockReturnValue({ sendMail: sendMailMock });
 
@@ -43,7 +40,7 @@ describe('User authentication', () => {
       .post('/api/v1/auth/signup')
       .send(userSchema);
 
-    const user = await User.findById(response.body.data.user._id);
+    const user = await User.findById(response.body.data.user.id);
     expect(user).not.toBeNull();
     expect(response.status).toBe(201);
     expect(response.body).toHaveProperty('token');
@@ -179,8 +176,6 @@ describe('User authentication', () => {
   });
 
   test('should reset password if reset token is valid', async () => {
-    const user = await User.checkExistingEmail(userSchema.email);
-
     const response = await request(app)
       .patch(`/api/v1/auth/reset-password/${validToken}`)
       .send({
@@ -194,8 +189,6 @@ describe('User authentication', () => {
   });
 
   test('should not reset password if reset token is invalid', async () => {
-    const user = await User.checkExistingEmail(userSchema.email);
-
     const response = await request(app)
       .patch('/api/v1/auth/reset-password/invalid')
       .send({
@@ -209,8 +202,6 @@ describe('User authentication', () => {
   });
 
   test('should not reset password if reset token is invalid', async () => {
-    const user = await User.checkExistingEmail(userSchema.email);
-
     const response = await request(app)
       .patch('/api/v1/auth/reset-password/invalid')
       .send({
@@ -224,8 +215,6 @@ describe('User authentication', () => {
   });
 
   test('should throw validation error if required fields are not provided', async () => {
-    const user = await User.checkExistingEmail(userSchema.email);
-
     const response = await request(app)
       .patch('/api/v1/auth/reset-password/invalid')
       .send({

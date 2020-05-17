@@ -1593,6 +1593,107 @@
         }
       }
     },
+    "api/v1/users/{userId}/votes": {
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "apiKey"
+            },
+            "required": true,
+            "description": "Bearer token"
+          },
+          {
+            "in": "cookie",
+            "name": "jwt",
+            "schema": {
+              "type": "apiKey"
+            },
+            "required": true,
+            "description": "Cookie can be used in place of Bearer Token"
+          },
+          {
+            "in": "path",
+            "name": "userId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "user id"
+          }
+        ],
+        "summary": "get a user's likes",
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/validListOfFavouritePhotosSchema"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad/malformed request or Validation errors"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "api/v1/users/myLikes": {
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "apiKey"
+            },
+            "required": true,
+            "description": "Bearer token"
+          },
+          {
+            "in": "cookie",
+            "name": "jwt",
+            "schema": {
+              "type": "apiKey"
+            },
+            "required": true,
+            "description": "Cookie can be used in place of Bearer Token"
+          }
+        ],
+        "summary": "get current logged in user's likes",
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/validListOfFavouriteCollectionsSchema"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad/malformed request or Validation errors"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
     "api/v1/photos/{photoId}/comments": {
       "post": {
         "tags": [
@@ -1790,7 +1891,8 @@
     "api/v1/comments": {
       "get": {
         "tags": [
-          "admins", "moderators"
+          "admins",
+          "moderators"
         ],
         "parameters": [
           {
@@ -1887,9 +1989,6 @@
           },
           "401": {
             "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden (User isn't a moderator or an admin)"
           }
         }
       },
@@ -1998,6 +2097,242 @@
           },
           "400": {
             "description": "Bad/malformed request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "api/v1/photos/{photoId}/vote": {
+      "post": {
+        "tags": [
+          "users"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "apiKey"
+            },
+            "required": true,
+            "description": "Bearer token"
+          },
+          {
+            "in": "cookie",
+            "name": "jwt",
+            "schema": {
+              "type": "apiKey"
+            },
+            "required": true,
+            "description": "Cookie can be used in place of Bearer Token"
+          },
+          {
+            "in": "path",
+            "name": "photoId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "id for photo"
+          }
+        ],
+        "summary": "like/unlike a photo",
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/validLikePhotoResponseSchema"
+                }
+              }
+            }
+          },
+          "200-alt": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/validUnlikePhotoResponseSchema"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad/malformed request or Validation errors"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "apiKey"
+            },
+            "required": true,
+            "description": "Bearer token"
+          },
+          {
+            "in": "cookie",
+            "name": "jwt",
+            "schema": {
+              "type": "apiKey"
+            },
+            "required": true,
+            "description": "Cookie can be used in place of Bearer Token"
+          },
+          {
+            "in": "path",
+            "name": "photoId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "id for photo"
+          }
+        ],
+        "summary": "get a photo's likes",
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/validListOfFavouritePhotosSchema"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad/malformed request or Validation errors"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "api/v1/collections/{collectionId}/vote": {
+      "post": {
+        "tags": [
+          "users"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "apiKey"
+            },
+            "required": true,
+            "description": "Bearer token"
+          },
+          {
+            "in": "cookie",
+            "name": "jwt",
+            "schema": {
+              "type": "apiKey"
+            },
+            "required": true,
+            "description": "Cookie can be used in place of Bearer Token"
+          },
+          {
+            "in": "path",
+            "name": "collectionId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "id for collection"
+          }
+        ],
+        "summary": "like/unlike a collection",
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/validLikeCollectionResponseSchema"
+                }
+              }
+            }
+          },
+          "200-alt": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/validUnlikeCollectionResponseSchema"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad/malformed request or Validation errors"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "apiKey"
+            },
+            "required": true,
+            "description": "Bearer token"
+          },
+          {
+            "in": "cookie",
+            "name": "jwt",
+            "schema": {
+              "type": "apiKey"
+            },
+            "required": true,
+            "description": "Cookie can be used in place of Bearer Token"
+          },
+          {
+            "in": "path",
+            "name": "collectionId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "id for collection"
+          }
+        ],
+        "summary": "get a collection's likes",
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/validListOfFavouriteCollectionsSchema"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad/malformed request or Validation errors"
           },
           "401": {
             "description": "Unauthorized"
@@ -3016,24 +3351,24 @@
       },
       "validSoftUserSchema": {
         "properties": {
-                  "_id": {
-                    "type": "string",
-                    "format": "mongoose ObjectID",
-                    "example": "5ea71dbd8121dd1808f6e7fe"
-                  },
-                  "name": {
-                    "type": "string",
-                    "example": "Killua Mustang"
-                  },
-                  "userName": {
-                    "type": "string",
-                    "example": "killi_19"
-                  },
-                  "avatar": {
-                    "type": "string",
-                    "example": "https://res.cloudinary.com/mycloud/image/upload/v1588371243/my-folder/ctdoiku4lurn1a0hwt0t.jpg"
-                  }
-                }
+          "_id": {
+            "type": "string",
+            "format": "mongoose ObjectID",
+            "example": "5ea71dbd8121dd1808f6e7fe"
+          },
+          "name": {
+            "type": "string",
+            "example": "Killua Mustang"
+          },
+          "userName": {
+            "type": "string",
+            "example": "killi_19"
+          },
+          "avatar": {
+            "type": "string",
+            "example": "https://res.cloudinary.com/mycloud/image/upload/v1588371243/my-folder/ctdoiku4lurn1a0hwt0t.jpg"
+          }
+        }
       },
       "validFullCommentSchema": {
         "properties": {
@@ -3079,76 +3414,7 @@
           }
         }
       },
-      "validFollowUserSchema": {
-        "properties": {
-          "role": {
-            "type": "string",
-            "example": "moderator"
-          },
-          "_id": {
-            "type": "string",
-            "format": "mongoose ObjectID",
-            "example": "5ea71dbd8121dd1808f6e463"
-          },
-          "avatar": {
-            "type": "string",
-            "example": "https://res.cloudinary.com/mycloud/image/upload/v1588371243/my-folder/ctdoiku4lurn1a0hwt0t.jpg"
-          },
-          "name": {
-            "type": "string",
-            "example": "Killua Mustang"
-          },
-          "following": {
-            "type": "array",
-            "example": [
-              "5eaafc623d468947a0ec9a82"
-            ]
-          }
-        }
-      },
-      "validFollowerSchema": {
-        "properties": {
-          "_id": {
-            "type": "string",
-            "format": "mongoose ObjectID",
-            "example": "5ea71dbd8121dd1808f6e463"
-          },
-          "avatar": {
-            "type": "string",
-            "example": "https://res.cloudinary.com/mycloud/image/upload/v1588371243/my-folder/ctdoiku4lurn1a0hwt0t.jpg"
-          },
-          "name": {
-            "type": "string",
-            "example": "Killua Mustang"
-          }
-        }
-      },
-      "validUnfollowUserSchema": {
-        "properties": {
-          "role": {
-            "type": "string",
-            "example": "moderator"
-          },
-          "_id": {
-            "type": "string",
-            "format": "mongoose ObjectID",
-            "example": "5ea71dbd8121dd1808f6e463"
-          },
-          "avatar": {
-            "type": "string",
-            "example": "https://res.cloudinary.com/mycloud/image/upload/v1588371243/my-folder/ctdoiku4lurn1a0hwt0t.jpg"
-          },
-          "name": {
-            "type": "string",
-            "example": "Killua Mustang"
-          },
-          "following": {
-            "type": "array",
-            "example": []
-          }
-        }
-      },
-      "validFollowResponseSchema": {
+      "validLikePhotoResponseSchema": {
         "properties": {
           "status": {
             "type": "string",
@@ -3156,19 +3422,19 @@
           },
           "data": {
             "properties": {
+              "photo": {
+              "type": "object",
+              "$ref": "#/components/schemas/validPhotoSchema"
+              },
               "message": {
                 "type": "string",
-                "example": "You followed John Doe successfully"
-              },
-              "user": {
-                "type": "object",
-                "$ref": "#/components/schemas/validFollowUserSchema"
+                "example": "You liked this photo"
               }
             }
           }
         }
       },
-      "validUnfollowResponseSchema": {
+      "validUnlikePhotoResponseSchema": {
         "properties": {
           "status": {
             "type": "string",
@@ -3176,102 +3442,132 @@
           },
           "data": {
             "properties": {
+              "photo": {
+              "type": "object",
+              "$ref": "#/components/schemas/validPhotoSchema"
+              },
               "message": {
                 "type": "string",
-                "example": "You unfollowed John Doe successfully"
-              },
-              "user": {
-                "type": "object",
-                "$ref": "#/components/schemas/validUnfollowUserSchema"
+                "example": "You unliked this photo"
               }
             }
           }
         }
       },
-      "validGetFollowersResponseSchema": {
+      "validLikeCollectionResponseSchema": {
         "properties": {
           "status": {
             "type": "string",
             "example": "success"
           },
           "data": {
+            "properties": {
+              "collection": {
+              "type": "object",
+              "$ref": "#/components/schemas/validCollectionSchema"
+              },
+              "message": {
+                "type": "string",
+                "example": "You liked this collection"
+              }
+            }
+          }
+        }
+      },
+      "validUnlikeCollectionResponseSchema": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "properties": {
+              "collection": {
+              "type": "object",
+              "$ref": "#/components/schemas/validCollectionSchema"
+              },
+              "message": {
+                "type": "string",
+                "example": "You liked this collection"
+              }
+            }
+          }
+        }
+      },
+      "validFavouritePhotoSchema": {
+        "properties": {
+          "_id": {
+            "type": "string",
+            "format": "mongoose ObjectID",
+            "example": "5ea71dbd8121dd1808f6e463"
+          },
+          "photoId": {
+            "type": "string",
+            "format": "mongoose ObjectID",
+            "example": "5ea71dbd8121dd1808f6e251"
+          },
+          "user": {
             "type": "object",
+            "$ref": "#/components/schemas/validSoftUserSchema"
+          }
+        }
+      },
+      "validFavouriteCollectionSchema": {
+        "properties": {
+          "_id": {
+            "type": "string",
+            "format": "mongoose ObjectID",
+            "example": "5ea71dbd8121dd1808f6e463"
+          },
+          "collectionId": {
+            "type": "string",
+            "format": "mongoose ObjectID",
+            "example": "5ea71dbd8121dd1808e21094"
+          },
+          "user": {
+            "type": "object",
+            "$ref": "#/components/schemas/validSoftUserSchema"
+          }
+        }
+      },
+      "validListOfFavouritePhotosSchema": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "success"
+          },
+          "total": {
+            "type": "number",
+            "example": 1
+          },
+          "data": {
             "properties": {
-              "followersCount": {
-                "type": "number",
-                "example": 1
-              },
-              "user": {
-                "type": "object",
-                "properties": {
-                  "_id": {
-                    "type": "string",
-                    "format": "mongoose ObjectID",
-                    "example": "5ea71dbd8121dd1808f6e7fe"
-                  },
-                  "name": {
-                    "type": "string",
-                    "example": "Killua Mustang"
-                  },
-                  "userName": {
-                    "type": "string",
-                    "example": "killi_19"
-                  },
-                  "avatar": {
-                    "type": "string",
-                    "example": "https://res.cloudinary.com/mycloud/image/upload/v1588371243/my-folder/ctdoiku4lurn1a0hwt0t.jpg"
-                  },
-                  "followers": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/validFollowerSchema"
-                    }
-                  }
+              "favourites": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/validFavouritePhotoSchema"
                 }
               }
             }
           }
         }
       },
-      "validGetFollowingResponseSchema": {
+      "validListOfFavouriteCollectionsSchema": {
         "properties": {
           "status": {
             "type": "string",
             "example": "success"
           },
+          "total": {
+            "type": "number",
+            "example": 1
+          },
           "data": {
-            "type": "object",
             "properties": {
-              "followingCount": {
-                "type": "number",
-                "example": 1
-              },
-              "user": {
-                "type": "object",
-                "properties": {
-                  "_id": {
-                    "type": "string",
-                    "format": "mongoose ObjectID",
-                    "example": "5ea71dbd8121dd1808f6e7fe"
-                  },
-                  "name": {
-                    "type": "string",
-                    "example": "Killua Mustang"
-                  },
-                  "userName": {
-                    "type": "string",
-                    "example": "killi_19"
-                  },
-                  "avatar": {
-                    "type": "string",
-                    "example": "https://res.cloudinary.com/mycloud/image/upload/v1588371243/my-folder/ctdoiku4lurn1a0hwt0t.jpg"
-                  },
-                  "following": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/validFollowerSchema"
-                    }
-                  }
+              "favourites": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/validFavouriteCollectionSchema"
                 }
               }
             }

@@ -61,7 +61,7 @@ describe('users tests', () => {
 
       expect(response.status).toBe(200);
       expect(response.body.data).toHaveProperty('user');
-      expect(response.body.data.user._id).toEqual(userOneSchema._id.toString());
+      expect(response.body.data.user.id).toEqual(userOneSchema._id.toString());
     });
 
     test('should throw a not found error if user is not found', async () => {
@@ -76,7 +76,7 @@ describe('users tests', () => {
         .set('Authorization', 'Bearer ' + userOneToken);
 
       expect(response.status).toBe(200);
-      expect(response.body.data.user._id).toEqual(userOneSchema._id.toString());
+      expect(response.body.data.user.id).toEqual(userOneSchema._id.toString());
     });
   });
 
@@ -87,7 +87,7 @@ describe('users tests', () => {
       );
 
       const checkArr = response.body.data.photos.every(
-        photo => photo.user._id === userOneSchema._id.toString(),
+        photo => photo.user.id === userOneSchema._id.toString(),
       );
 
       expect(response.status).toBe(200);
@@ -101,7 +101,7 @@ describe('users tests', () => {
         .set('Authorization', 'Bearer ' + userOneToken);
 
       const checkArr = response.body.data.photos.every(
-        photo => photo.user._id === userOneSchema._id.toString(),
+        photo => photo.user.id === userOneSchema._id.toString(),
       );
 
       expect(response.status).toBe(200);
