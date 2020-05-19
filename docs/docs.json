@@ -281,6 +281,17 @@
         }
       }
     },
+    "api/v1/auth/logout": {
+      "post": {
+        "tags": ["users"],
+        "summary": "log out",
+        "responses": {
+          "200": {
+            "description": "success"
+          }
+        }
+      }
+    },
     "/api/v1/users": {
       "get": {
         "tags": [
@@ -558,6 +569,107 @@
           },
           "401": {
             "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "api/v1/admin/users/{userid}": {
+      "patch": {
+        "tags": [
+          "admin"
+        ],
+        "summary": "Update a user",
+        "parameters": [
+           {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "apiKey"
+            },
+            "required": true,
+            "description": "Bearer token"
+          },
+          {
+            "in": "cookie",
+            "name": "jwt",
+            "schema": {
+              "type": "apiKey"
+            },
+            "required": true,
+            "description": "Cookie can be used in place of Bearer Token"
+          },
+          {
+            "in": "path",
+            "name": "userId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "id for user"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/validUserResponseSchema"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "admin"
+        ],
+        "summary": "delete a user",
+        "parameters": [
+           {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "apiKey"
+            },
+            "required": true,
+            "description": "Bearer token"
+          },
+          {
+            "in": "cookie",
+            "name": "jwt",
+            "schema": {
+              "type": "apiKey"
+            },
+            "required": true,
+            "description": "Cookie can be used in place of Bearer Token"
+          },
+          {
+            "in": "path",
+            "name": "userId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "id for user"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "success"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "User not found"
           }
         }
       }
@@ -1694,6 +1806,190 @@
         }
       }
     },
+    "api/v1/users/following/photos": {
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "apiKey"
+            },
+            "required": true,
+            "description": "Bearer token"
+          },
+          {
+            "in": "cookie",
+            "name": "jwt",
+            "schema": {
+              "type": "apiKey"
+            },
+            "required": true,
+            "description": "Cookie can be used in place of Bearer Token"
+          }
+        ],
+        "summary": "Get a logged in user's following's photos",
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/validListOfPhotoSchema"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "api/v1/users/following/collections": {
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Gather a logged in user's following's collections",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "apiKey"
+            },
+            "required": true,
+            "description": "Bearer token"
+          },
+          {
+            "in": "cookie",
+            "name": "jwt",
+            "schema": {
+              "type": "apiKey"
+            },
+            "required": true,
+            "description": "Cookie can be used in place of Bearer Token"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/validListOfCollectionSchema"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+      "api/v1/users/myInterests/photos": {
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "apiKey"
+            },
+            "required": true,
+            "description": "Bearer token"
+          },
+          {
+            "in": "cookie",
+            "name": "jwt",
+            "schema": {
+              "type": "apiKey"
+            },
+            "required": true,
+            "description": "Cookie can be used in place of Bearer Token"
+          }
+        ],
+        "summary": "Get a logged in user's photos content based on interests",
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/validListOfPhotoSchema"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      }
+    },
+    "api/v1/users/myInterests/collections": {
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Gather a logged in user's collections based on interests",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "apiKey"
+            },
+            "required": true,
+            "description": "Bearer token"
+          },
+          {
+            "in": "cookie",
+            "name": "jwt",
+            "schema": {
+              "type": "apiKey"
+            },
+            "required": true,
+            "description": "Cookie can be used in place of Bearer Token"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/validListOfCollectionSchema"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      }
+    },
     "api/v1/photos/{photoId}/comments": {
       "post": {
         "tags": [
@@ -2182,6 +2478,7 @@
             "required": true,
             "description": "Bearer token"
           },
+          
           {
             "in": "cookie",
             "name": "jwt",
@@ -2336,6 +2633,56 @@
           },
           "401": {
             "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "api/v1/search": {
+      "post": {
+        "tags": ["users"],
+        "summary": "search users, collections and photos",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "searchField",
+            "schema": {
+              "type": "string",
+              "example": "users"
+            },
+            "required": false,
+            "description": "field to search: one of users, photos or collections"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "description": "string to search for",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "searchString": {
+                    "type": "string",
+                    "example": "killua"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/validSearchResponseSchema"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad/malformed request or Validation errors"
           }
         }
       }
@@ -2702,6 +3049,16 @@
           }
         }
       },
+      "validUserListSchema": {
+        "properties": {
+          "users": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/validUserSchema"
+            }
+          }
+        }
+      },
       "validUserResponseSchema": {
         "properties": {
           "status": {
@@ -2756,6 +3113,10 @@
           "status": {
             "type": "string",
             "example": "success"
+          },
+          "total": {
+            "type": "number",
+            "example": 2
           },
           "data": {
             "properties": {
@@ -2958,6 +3319,10 @@
           "status": {
             "type": "string",
             "example": "success"
+          },
+          "total": {
+            "type": "number",
+            "example": 4
           },
           "data": {
             "properties": {
@@ -3549,6 +3914,35 @@
                 }
               }
             }
+          }
+        }
+      },
+      "validSearchResponseSchema": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "success"
+          },
+          "total": {
+            "type": "object",
+            "properties": {
+              "users": {
+                "type": "number",
+                "example": 1
+              },
+              "photos": {
+                "type": "number",
+                "example": 1
+              },
+              "collections": {
+                "type": "number",
+                "example": 1
+              }
+            }
+          },
+          "data": {
+            "type": "object",
+            "$ref": "#/components/schemas/validUserListSchema"
           }
         }
       },

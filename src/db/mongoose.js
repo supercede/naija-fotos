@@ -14,7 +14,6 @@ const {
 } = process.env;
 
 const options = {
-  autoIndex: false, // Don't build indexes
   reconnectTries: 10, // Retry up to 10 times (Docker mongo image takes time to connect)
   reconnectInterval: 500, // Reconnect every 500ms
   poolSize: 10, // Maintain up to 10 socket connections
@@ -29,6 +28,7 @@ let db;
 
 if (NODE_ENV === 'development') {
   db = DEV_DB;
+  mongoose.set('debug', true);
 } else if (NODE_ENV === 'test') {
   db = TEST_DB;
 } else {

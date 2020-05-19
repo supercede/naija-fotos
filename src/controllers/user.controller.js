@@ -4,11 +4,15 @@ import { ApplicationError, NotFoundError } from '../helpers/errors';
 import User from '../models/user.model';
 import deleteImage from '../helpers/deleteImage';
 import filterObj from '../helpers/filterObject';
-import SearchFeatures from '../utils/searchFeatures';
 import dbqueries from '../utils/dbqueries';
 import Favourite from '../models/favourite.model';
 
-const { getAll } = dbqueries;
+const {
+  getAll,
+  deleteOne,
+  updateOne,
+  getContent,
+} = dbqueries;
 
 export default {
   uploadAvatar: async (req, res) => {
@@ -41,22 +45,7 @@ export default {
     }
   },
 
-  getAllUsers: async (req, res) => {
-    const usersQuery = new SearchFeatures(User.find(), req.query)
-      .filter()
-      .sort()
-      .fieldLimit()
-      .pagination();
-
-    const users = await usersQuery.query;
-
-    res.status(200).json({
-      status: 'success',
-      data: {
-        users,
-      },
-    });
-  },
+  getAllUsers: getAll(User),
 
   getMe: (req, res, next) => {
     if (req.user) {
@@ -278,4 +267,41 @@ export default {
   },
 
   getUserLikes: getAll(Favourite),
+
+  deleteUser: deleteOne(User),
+
+  updateUser: updateOne(
+    User,
+    'role',
+    'email',
+    'userName',
+    'name',
+    'portfolio',
+    'interests',
+    'bio',
+  ),
+
+  getUserInterests: async (req, res) => {
+    const { interests } = req.user;
+
+    if (!interests || interests.length === 0) {
+      throw new NotFoundError(
+        'You currently have not chosen any interests. Add interests to your profile',
+      );
+    }
+
+    await getContent(req, res, 'tags', interests);
+  },
+
+  getFollowingContent: async (req, res) => {
+    const { following } = req.user;
+
+    if (following.length === 0 || !following) {
+      throw new NotFoundError(
+        'You are not following anyone currently, follow others to see more content',
+      );
+    }
+
+    await getContent(req, res, 'user', following);
+  },
 };

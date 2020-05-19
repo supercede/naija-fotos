@@ -1,6 +1,7 @@
 import { NotFoundError, ApplicationError } from '../helpers/errors';
 import Collection from '../models/collection.model';
 import Photo from '../models/photo.model';
+import SearchFeatures from './searchFeatures';
 
 export default {
   checkIfExists: async (Model, id) => {

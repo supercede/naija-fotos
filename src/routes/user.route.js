@@ -22,6 +22,9 @@ const {
   followOrUnfollow,
   getUserFollowers,
   getUserFollowing,
+  getUserInterests,
+  getFollowingContent,
+  getUserLikes,
 } = userController;
 
 const { getAllPhotos } = photoController;
@@ -57,7 +60,32 @@ userRouter.get(
   catchAsync(getUserFollowing),
 );
 
-userRouter.get('/myLikes', authenticate, getMe, getResourceLikes);
+userRouter.get(
+  '/myInterests/photos',
+  authenticate,
+  catchAsync(getUserInterests),
+);
+
+userRouter.get(
+  '/myInterests/collections',
+  authenticate,
+  catchAsync(getUserInterests),
+);
+
+userRouter.get(
+  '/following/photos',
+  authenticate,
+  catchAsync(getFollowingContent),
+);
+
+userRouter.get(
+  '/following/collections',
+  authenticate,
+  catchAsync(getFollowingContent),
+);
+
+userRouter.get('/myLikes', authenticate, getMe, getUserLikes);
+// getResourceLikes);
 
 userRouter.get('/:userId', catchAsync(getUser));
 userRouter.get('/:userId/photos', catchAsync(getAllPhotos));

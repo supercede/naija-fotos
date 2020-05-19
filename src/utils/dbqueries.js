@@ -81,7 +81,9 @@ export default {
       }
 
       if (
-        Model.collection.collectionName === 'collections' && (!req.user || req.params.userId !== req.user._id)) {
+        Model.collection.collectionName === 'collections' &&
+        (!req.user || req.params.userId !== req.user._id)
+      ) {
         filter.private = false;
       }
 
@@ -208,4 +210,44 @@ export default {
         status: 'success',
       });
     }),
+
+  getContent: async (req, res, prop, column) => {
+    let Model;
+    if (req.url.includes('photos')) {
+      Model = Photo;
+    }
+    if (req.url.includes('collections')) {
+      Model = Collection;
+    }
+
+    const totalCount = await Model.countDocuments({
+      [`${prop}`]: { $in: column },
+    });
+
+    if (totalCount === 0) {
+      throw new NotFoundError('No results found matching your search');
+    }
+
+    const features = new SearchFeatures(
+      Model.find({ [`${prop}`]: { $in: column } }),
+      req.query,
+    )
+      .filter()
+      .sort()
+      .fieldLimit()
+      .pagination();
+
+    const docs = await features.query;
+
+    const field = Model.collection.collectionName;
+    const data = {};
+
+    data[field] = docs;
+
+    res.status(200).json({
+      status: 'success',
+      total: totalCount,
+      data,
+    });
+  },
 };

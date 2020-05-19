@@ -6,7 +6,7 @@ export default class SearchFeatures {
 
   filter() {
     const queryObj = { ...this.queryStr };
-    const excludedWords = ['limit', 'fields', 'sort', 'page', 'tag'];
+    const excludedWords = ['limit', 'fields', 'sort', 'page', 'tag', 'searchField'];
 
     excludedWords.forEach(word => delete queryObj[word]);
 

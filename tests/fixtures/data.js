@@ -29,17 +29,20 @@ export const userTwoSchema = {
     email: 'barryWande@kryptic.com',
     password: 'barrywande001',
   },
+  interests: ['person', 'some tags']
 };
 
 export const adminUserSchema = {
   _id: idAdmin,
   name: 'Ging Freecss',
   userName: 'clark11',
+  interests: ['strange', 'non-exisiting'],
   local: {
     email: 'admin@greedisland.com',
     password: 'barrywande001',
   },
   role: 'admin',
+  following: [userOneSchema._id]
 };
 
 export const userThreeSchema = {
@@ -139,7 +142,7 @@ const photoFour = {
 
 export const publicCollectionOne = {
   upvoteCount: 0,
-  tags: [],
+  tags: ['people'],
   private: false,
   photos: [photoOne._id, photoTwo._id],
   upvotes: [],
@@ -153,7 +156,6 @@ export const publicCollectionOne = {
 
 const publicCollectionTwo = {
   upvoteCount: 0,
-  tags: [],
   private: false,
   photos: [photoTwo._id, photoFour._id],
   upvotes: [],
@@ -167,7 +169,6 @@ const publicCollectionTwo = {
 
 const publicCollectionThree = {
   upvoteCount: 0,
-  tags: [],
   private: false,
   photos: [photoTwo._id, photoFour._id],
   upvotes: [],
@@ -181,7 +182,6 @@ const publicCollectionThree = {
 
 export const privateCollectionOne = {
   upvoteCount: 0,
-  tags: [],
   private: true,
   photos: [photoOne._id, photoThree._id],
   upvotes: [],
