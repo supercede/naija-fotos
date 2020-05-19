@@ -45,14 +45,22 @@ const collectionSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
+    autoIndex: true,
   },
 );
+
+collectionSchema.index({ name: 'text', description: 'text' });
 
 collectionSchema.pre(/^find/, async function(next) {
   this.populate({
     path: 'user',
     select: 'name userName',
-  }).populate({ path: 'photos', select: 'imageURL user tags' });
+  });
+  next();
+});
+
+collectionSchema.pre(/^findOne/, async function(next) {
+  this.populate({ path: 'photos', select: 'imageURL user tags' });
   next();
 });
 

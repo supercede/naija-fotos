@@ -7,7 +7,9 @@ import {
   setupDB,
   tearDownDB,
   userOneToken,
+  userTwoToken,
   userThreeToken,
+  adminToken,
 } from '../fixtures/data';
 
 import '../../src/db/mongoose';
@@ -35,7 +37,7 @@ describe('users tests', () => {
         .patch('/api/v1/users/avatar')
         .set('Authorization', 'Bearer ' + userOneToken);
 
-      // expect(response.status).toBe(400);
+      expect(response.status).toBe(400);
       expect(response.body).toHaveProperty('error');
       expect(response.body.error.message).toBe('Please upload an image');
     });
@@ -202,6 +204,71 @@ describe('users tests', () => {
         .set('Authorization', 'Bearer ' + userOneToken);
 
       expect(response.status).toBe(204);
+    });
+  });
+
+  describe('get user content', () => {
+    describe('get user photo interests', () => {
+      test('should return error if user has no interests', async () => {
+        const response = await request(app)
+          .get('/api/v1/users/myInterests/photos')
+          .set('Authorization', 'Bearer ' + userThreeToken);
+
+        expect(response.status).toBe(404);
+        expect(response.body.error.message).toBe(
+          'You currently have not chosen any interests. Add interests to your profile',
+        );
+      });
+
+      test('should return error if user interests match no available photos', async () => {
+        const response = await request(app)
+          .get('/api/v1/users/myInterests/photos')
+          .set('Authorization', 'Bearer ' + adminToken);
+
+        expect(response.status).toBe(404);
+        expect(response.body.error.message).toBe(
+          'No results found matching your search',
+        );
+      });
+
+      test('should return user photo interests', async () => {
+        const response = await request(app)
+          .get('/api/v1/users/myInterests/photos')
+          .set('Authorization', 'Bearer ' + userTwoToken);
+
+        expect(response.status).toBe(200);
+        expect(response.body.data).toHaveProperty('photos');
+      });
+
+      test('should return error if user interests match no available collections', async () => {
+        const response = await request(app)
+          .get('/api/v1/users/myInterests/collections')
+          .set('Authorization', 'Bearer ' + userTwoToken);
+
+        expect(response.status).toBe(404);
+        expect(response.body).toHaveProperty('error');
+      });
+
+      test('should return error if user follows no one', async () => {
+        const response = await request(app)
+          .get('/api/v1/users/following/photos')
+          .set('Authorization', 'Bearer ' + userThreeToken);
+
+        expect(response.status).toBe(404);
+        expect(response.body.error.message).toBe(
+          'You are not following anyone currently, follow others to see more content',
+        );
+      });
+
+      test('should return user followings photos', async () => {
+        const response = await request(app)
+          .get('/api/v1/users/following/photos')
+          .set('Authorization', 'Bearer ' + adminToken);
+
+
+        expect(response.status).toBe(200);
+        expect(response.body.data).toHaveProperty('photos');
+      });
     });
   });
 });

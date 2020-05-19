@@ -224,4 +224,11 @@ describe('User authentication', () => {
     expect(response.body.status).toBe('error');
     expect(response.body.error.errors).toHaveProperty('passwordConfirm');
   });
+
+  test('should log out a user', async () => {
+    const response = await request(app).post('/api/v1/auth/logout')
+    
+    expect(response.status).toBe(200);
+    expect(response.body.message).toBe('Logged out successfully');
+  })
 });

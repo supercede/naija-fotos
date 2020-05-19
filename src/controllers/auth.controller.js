@@ -214,4 +214,15 @@ export default {
     // Log user in, send jwt
     createCookieFromToken(user, 200, req, res);
   },
+
+  logout: (req, res) => {
+    res.cookie('jwt', 'stuff', {
+      expires: new Date(Date.now() + 3 * 1000),
+      httpOnly: true,
+    });
+    res.status(200).json({
+      status: 'success',
+      message: 'Logged out successfully',
+    });
+  },
 };

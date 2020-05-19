@@ -14,6 +14,7 @@ const {
   resetPassword,
   forgotPassword,
   socialAuth,
+  logout,
 } = authController;
 
 const {
@@ -27,6 +28,7 @@ const authRouter = Router();
 
 authRouter.post('/signup', validator(userSignUpSchema), catchAsync(signup));
 authRouter.post('/login', validator(userLogInSchema), catchAsync(login));
+authRouter.post('/logout', catchAsync(logout));
 authRouter.post(
   '/forgot-password',
   validator(userForgotPasswordSchema),

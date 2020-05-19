@@ -6,8 +6,15 @@ export default async function authorize(Model, photoId, id, role) {
   if (!doc) {
     throw new NotFoundError('Item not found');
   }
+  let userId;
 
-  if (doc.user.id !== id && role === 'user') {
+  if (Model.collection.collectionName === 'users') {
+    userId = doc.id;
+  } else {
+    userId = doc.user.id;
+  }
+
+  if (userId !== id && role === 'user') {
     throw new ApplicationError(
       403,
       'You are not permitted to perform this operation',

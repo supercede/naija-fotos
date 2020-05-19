@@ -8,7 +8,9 @@ const photoSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    description: String,
+    description: {
+      type: String,
+    },
     upvoteCount: {
       type: Number,
       default: 0,
@@ -36,8 +38,11 @@ const photoSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
+    autoIndex: true,
   },
 );
+
+photoSchema.index({ description: 'text', tags: 'text' });
 
 photoSchema.pre(/^find$/, async function(next) {
   this.populate({

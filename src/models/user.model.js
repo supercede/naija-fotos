@@ -21,7 +21,6 @@ const userSchema = new mongoose.Schema(
     portfolio: String,
     userName: {
       type: String,
-      unique: true,
       lowercase: true,
     },
     local: {
@@ -85,9 +84,11 @@ const userSchema = new mongoose.Schema(
   {
     toJSON: { virtuals: true },
     toObject: { virtuals: true },
-    timestamps: true,
+    autoIndex: true,
   },
 );
+
+userSchema.index({ name: 'text', userName: 'text' });
 
 userSchema.virtual('photos', {
   ref: 'Photo',
@@ -116,6 +117,8 @@ userSchema.methods.toJSON = function() {
   const userObj = this.toObject();
   userObj.id = userObj._id;
   delete userObj._id;
+  delete userObj.createdAt;
+  delete userObj.updatedAt;
   if (userObj.local) delete userObj.local.password;
   return userObj;
 };
@@ -151,8 +154,8 @@ userSchema.statics.findBySocialID = async function(id, field) {
   return user;
 };
 
-userSchema.statics.decodeVerificationToken = async token =>
-  jwt.verify(token, jwtPublicSecret);
+// userSchema.statics.decodeVerificationToken = async token =>
+//   jwt.verify(token, jwtPublicSecret);
 
 userSchema.statics.checkExistingEmail = async email => {
   const checkEmail = await User.findOne({
