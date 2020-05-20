@@ -215,6 +215,15 @@ export default {
     createCookieFromToken(user, 200, req, res);
   },
 
+  /**
+   * @function logoutUser
+   * @description handles user signup
+   *
+   * @param {Object} request - the request object
+   * @param {Object} response - the response object
+   *
+   * @returns {Object} response - the response object
+   */
   logout: (req, res) => {
     res.cookie('jwt', 'stuff', {
       expires: new Date(Date.now() + 3 * 1000),

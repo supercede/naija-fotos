@@ -4,7 +4,7 @@ import passportJWT from '../services/passport/config';
 import authController from '../controllers/auth.controller';
 import authSchema from '../validations/auth.validation';
 import validator from '../middleware/validator';
-import catchAsync from '../utils/catchAsync';
+import catchAsync from '../middleware/catchAsync';
 import passportGoogle from '../services/passport/passport-google';
 import passportFacebook from '../services/passport/passport-facebook';
 

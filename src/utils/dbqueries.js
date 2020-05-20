@@ -1,5 +1,5 @@
 /* eslint-disable implicit-arrow-linebreak, no-underscore-dangle */
-import catchAsync from './catchAsync';
+import catchAsync from '../middleware/catchAsync';
 import SearchFeatures from './searchFeatures';
 import authorize from './authorize';
 import filterObj from '../helpers/filterObject';
@@ -12,6 +12,15 @@ import utils from './utils';
 const { checkIfExists, updateCount } = utils;
 
 export default {
+  /**
+   * @function createOne
+   * @description create a document
+   *
+   * @param {Object} request - the request object
+   * @param {Object} response - the response object
+   *
+   * @return {Function}
+   */
   createOne: (Model, ...fields) =>
     catchAsync(async (req, res) => {
       let relatedModel, id;
@@ -50,6 +59,15 @@ export default {
       });
     }),
 
+  /**
+   * @function getAll
+   * @description get all documents ina collection
+   *
+   * @param {Object} request - the request object
+   * @param {Object} response - the response object
+   *
+   * @return {Function}
+   */
   getAll: Model =>
     catchAsync(async (req, res) => {
       let populate, select;
@@ -114,6 +132,15 @@ export default {
       });
     }),
 
+  /**
+   * @function getOne
+   * @description get one document
+   *
+   * @param  {mongoose.Model} Model
+   * @param  {string} populate
+   *
+   * @return {Function}
+   */
   getOne: (Model, populate = 'user') =>
     catchAsync(async (req, res) => {
       let filter = {};
@@ -153,6 +180,15 @@ export default {
       });
     }),
 
+  /**
+   * @function updateOne
+   * @description updating a document
+   *
+   * @param {Object} request - the request object
+   * @param {Object} response - the response object
+   *
+   * @return {Function}
+   */
   updateOne: (Model, ...fields) =>
     catchAsync(async (req, res) => {
       const { id, role } = req.user;
@@ -178,6 +214,15 @@ export default {
       });
     }),
 
+  /**
+   * @function deleteOne
+   * @description delete a document
+   *
+   * @param {Object} request - the request object
+   * @param {Object} response - the response object
+   *
+   * @return {Function}
+   */
   deleteOne: Model =>
     catchAsync(async (req, res) => {
       let relatedModel, modelId;
@@ -211,6 +256,17 @@ export default {
       });
     }),
 
+  /**
+   * @function
+   * @description to get customized user contents
+   *
+   * @param  {Object} the request object
+   * @param  {Object} the response object
+   * @param  {string} the property to query
+   * @param  {property} field to query
+   *
+   * @return {Object} the response object
+   */
   getContent: async (req, res, prop, column) => {
     let Model;
     if (req.url.includes('photos')) {
@@ -239,6 +295,9 @@ export default {
 
     const docs = await features.query;
 
+    const { limit } = features.query.options;
+    const { page = 1 } = features.queryStr;
+
     const field = Model.collection.collectionName;
     const data = {};
 
@@ -248,6 +307,10 @@ export default {
       status: 'success',
       total: totalCount,
       data,
+      meta: {
+        page: parseInt(page, 10),
+        limit,
+      },
     });
   },
 };

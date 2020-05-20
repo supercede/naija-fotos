@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import userController from '../controllers/user.controller';
 import validator from '../middleware/validator';
-import catchAsync from '../utils/catchAsync';
+import catchAsync from '../middleware/catchAsync';
 import userSchema from '../validations/user.validation';
 import { AvatarUploads } from '../services/imageUpload';
 import authentication from '../middleware/authenticate';

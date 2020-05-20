@@ -9,6 +9,16 @@ const { getAll } = dbqueries;
 const { checkIfExists, updateCount } = utils;
 
 export default {
+
+  /**
+   * @function likeOrUnlikeResource
+   * @description handles user liking or unliking a post
+   *
+   * @param {Object} request - the request object
+   * @param {Object} response - the response object
+   *
+   * @returns {Object} response - the response object
+   */
   likeOrUnlikeResource: async (req, res) => {
     let field, id, Model, doc, like;
     const { photoId, collectionId } = req.params;

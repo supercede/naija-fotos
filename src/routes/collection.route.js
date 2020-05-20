@@ -4,7 +4,7 @@ import commentController from '../controllers/comment.controller';
 import authentication from '../middleware/authenticate';
 import collectionSchema from '../validations/collection.validation';
 import commentSchema from '../validations/comment.validation';
-import catchAsync from '../utils/catchAsync';
+import catchAsync from '../middleware/catchAsync';
 import validator from '../middleware/validator';
 import upvoteController from '../controllers/upvote.controller';
 

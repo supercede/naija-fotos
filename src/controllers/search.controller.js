@@ -4,6 +4,15 @@ import Collection from '../models/collection.model';
 import SearchFeatures from '../utils/searchFeatures';
 
 export default {
+  /**
+   * @function search
+   * @description handles seearch requests to the database
+   *
+   * @param {Object} request - the request object
+   * @param {Object} response - the response object
+   *
+   * @returns {Object} response - the response object
+   */
   search: async (req, res) => {
     const { searchField = 'users' } = req.query;
     const { searchString } = req.body;

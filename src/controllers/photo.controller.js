@@ -12,6 +12,15 @@ const {
 } = dbqueries;
 
 export default {
+  /**
+   * @function uploadImage
+   * @description handles uploading an image
+   *
+   * @param {Object} request - the request object
+   * @param {Object} response - the response object
+   *
+   * @returns {Object} response - the response object
+   */
   uploadImage: async (req, res) => {
     if (req.file) {
       const { height, width, secure_url } = req.file;
