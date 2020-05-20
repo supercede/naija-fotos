@@ -1,9 +1,15 @@
 import { NotFoundError, ApplicationError } from '../helpers/errors';
 import Collection from '../models/collection.model';
 import Photo from '../models/photo.model';
-import SearchFeatures from './searchFeatures';
 
 export default {
+  /**
+   * @description check if an item exist in a collection
+   *
+   * @param {mongoose.Model} Model - Model to be queried
+   * @param {string} id - id of item to be modified
+
+   */
   checkIfExists: async (Model, id) => {
     const modelName = await Model.collection.collectionName.slice(0, -1);
 
@@ -14,6 +20,14 @@ export default {
     }
   },
 
+  /**
+   * @description check if user can add/remove photo to/from a collection
+   *
+   * @param {string} collectionId
+   * @param {string} photoId
+   * @param {string} userId
+   *
+   */
   verify: async (collectionId, photoId, userId) => {
     const collection = await Collection.findById(collectionId);
 
@@ -36,6 +50,15 @@ export default {
     return { photo, collection };
   },
 
+  /**
+   * @description update a field total in a collection
+   *
+   * @param {mongoose.Model} Model - Model to be queried
+   * @param {string} id - id of item to be updated
+   * @param {string} val - value to increase or decrease field by
+   * @param {field} field - field to be updated in item
+   *
+   */
   updateCount: async (Model, id, val, field) => {
     const doc = await Model.findOneAndUpdate(
       { _id: id },

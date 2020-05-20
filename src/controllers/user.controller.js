@@ -15,6 +15,15 @@ const {
 } = dbqueries;
 
 export default {
+  /**
+   * @function uploadAvatar
+   * @description handles user upload avatar
+   *
+   * @param {Object} request - the request object
+   * @param {Object} response - the response object
+   *
+   * @returns {Object} response - the response object
+   */
   uploadAvatar: async (req, res) => {
     const { _id } = req.user;
     let oldAvatar = null;
@@ -47,6 +56,16 @@ export default {
 
   getAllUsers: getAll(User),
 
+  /**
+   * @function getOneUser
+   * @description handles sets userId parameter to logged in user id
+   *
+   * @param {Object} request - the request object
+   * @param {Object} response - the response object
+   * @param {Function} next - to call the next middleware
+   *
+   * @returns {Function} next - to call the next middleware
+   */
   getMe: (req, res, next) => {
     if (req.user) {
       req.params.userId = req.user._id;
@@ -54,6 +73,15 @@ export default {
     next();
   },
 
+  /**
+   * @function getOneUser
+   * @description handles get one user
+   *
+   * @param {Object} request - the request object
+   * @param {Object} response - the response object
+   *
+   * @returns {Object} response - the response object
+   */
   getUser: async (req, res) => {
     let userId;
     if (mongoose.Types.ObjectId.isValid(req.params.userId)) {
@@ -79,6 +107,15 @@ export default {
     });
   },
 
+  /**
+   * @function updateMe
+   * @description handles update logged in user
+   *
+   * @param {Object} request - the request object
+   * @param {Object} response - the response object
+   *
+   * @returns {Object} response - the response object
+   */
   updateMe: async (req, res) => {
     if (req.body.constructor === Object && Object.keys(req.body).length === 0) {
       throw new ApplicationError(400, 'Empty Request Object');
@@ -123,6 +160,15 @@ export default {
     });
   },
 
+  /**
+   * @function deleteMe
+   * @description handles delete current logged in user
+   *
+   * @param {Object} request - the request object
+   * @param {Object} response - the response object
+   *
+   * @returns {Object} response - the response object
+   */
   deleteMe: async (req, res) => {
     await User.findByIdAndUpdate(req.user.id, { active: false });
 
@@ -132,6 +178,15 @@ export default {
     });
   },
 
+  /**
+   * @function followOrUnfollow
+   * @description handles following and unfollowing another user
+   *
+   * @param {Object} request - the request object
+   * @param {Object} response - the response object
+   *
+   * @returns {Object} response - the response object
+   */
   followOrUnfollow: async (req, res) => {
     const { userId } = req.params;
 
@@ -220,6 +275,15 @@ export default {
     });
   },
 
+  /**
+   * @function getUserFollowers
+   * @description handles getting a user's followers
+   *
+   * @param {Object} request - the request object
+   * @param {Object} response - the response object
+   *
+   * @returns {Object} response - the response object
+   */
   getUserFollowers: async (req, res) => {
     const { userId } = req.params;
 
@@ -243,6 +307,15 @@ export default {
     });
   },
 
+  /**
+   * @function getUserFollowing
+   * @description handles getting people following a user
+   *
+   * @param {Object} request - the request object
+   * @param {Object} response - the response object
+   *
+   * @returns {Object} response - the response object
+   */
   getUserFollowing: async (req, res) => {
     const { userId } = req.params;
 
@@ -281,6 +354,15 @@ export default {
     'bio',
   ),
 
+  /**
+   * @function getUserInterests
+   * @description handles getting a user's content based on content
+   *
+   * @param {Object} request - the request object
+   * @param {Object} response - the response object
+   *
+   * @returns {Function} getContent - to get photos and collections based on a user's interests
+   */
   getUserInterests: async (req, res) => {
     const { interests } = req.user;
 
@@ -293,6 +375,15 @@ export default {
     await getContent(req, res, 'tags', interests);
   },
 
+  /**
+   * @function getFollowingContent
+   * @description handles getting a user's content based on who they follow
+   *
+   * @param {Object} request - the request object
+   * @param {Object} response - the response object
+   *
+   * @returns {Function} getContent - to get photos and collections based on who a user follows
+   */
   getFollowingContent: async (req, res) => {
     const { following } = req.user;
 

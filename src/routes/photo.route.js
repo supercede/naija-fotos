@@ -4,7 +4,7 @@ import commentController from '../controllers/comment.controller';
 import { PhotoUploads } from '../services/imageUpload';
 import photoSchema from '../validations/photo.validation';
 import commentSchema from '../validations/comment.validation';
-import catchAsync from '../utils/catchAsync';
+import catchAsync from '../middleware/catchAsync';
 import validator from '../middleware/validator';
 import authentication from '../middleware/authenticate';
 import upvoteController from '../controllers/upvote.controller';

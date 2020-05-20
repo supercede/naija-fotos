@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import searchContoller from '../controllers/search.controller';
-import catchAsync from '../utils/catchAsync';
+import catchAsync from '../middleware/catchAsync';
 import searchValidation from '../validations/search.validation';
 import validator from '../middleware/validator';
 

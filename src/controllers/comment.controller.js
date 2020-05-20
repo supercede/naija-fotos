@@ -25,6 +25,15 @@ export default {
 
   deleteComment: deleteOne(Comment),
 
+  /**
+   * @function getPhotoCollectionComments
+   * @description handles getting comments for a particular collection or photo
+   *
+   * @param {Object} request - the request object
+   * @param {Object} response - the response object
+   *
+   * @returns {Object} response - the response object
+   */
   getPhotoCollectionComments: async (req, res) => {
     let field, id;
 
